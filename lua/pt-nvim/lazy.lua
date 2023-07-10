@@ -22,10 +22,10 @@ local plugins = {
         dependencies = {
             -- LSP Support
             { 'neovim/nvim-lspconfig' }, -- Required
-            {                    -- Optional
+            {                            -- Optional
                 'williamboman/mason.nvim',
                 build = function()
----@diagnostic disable-next-line: param-type-mismatch
+                    ---@diagnostic disable-next-line: param-type-mismatch
                     pcall(vim.cmd, 'MasonUpdate')
                 end,
             },
@@ -50,12 +50,30 @@ local plugins = {
         'lewis6991/gitsigns.nvim',
     },
     {
-        -- Theme inspired by Atom
-        'navarasu/onedark.nvim',
-        priority = 1000,
-        config = function()
-            vim.cmd.colorscheme 'onedark'
+        'NTBBloodbath/doom-one.nvim',
+        setup = function()
+            vim.g.doom_one_cursor_coloring = false
+            vim.g.doom_one_terminal_colors = true
+            vim.g.doom_one_italic_comments = false
+            vim.g.doom_one_enable_treesitter = true
+            vim.g.doom_one_diagnostics_text_color = false
+            vim.g.doom_one_transparent_background = false
+
+            -- Plugin Transparency
+            vim.g.doom_one_pumblend_enable = false
+            vim.g.doom_one_pumblend_transparency = 20
+
+            -- Plugin Integrations
+            vim.g.doom_one_plugin_neorg = true
+            vim.g.doom_one_plugin_telescope = true
+            vim.g.doom_one_plugin_neogit = true
+            vim.g.doom_one_plugin_nvim_tree = true
+            vim.g.doom_one_plugin_whichkey = true
+            vim.g.doom_one_plugin_indent_blankline = true
         end,
+        config = function ()
+            vim.cmd.colorscheme 'doom-one'
+        end
     },
     {
         -- Set lualine as statusline
