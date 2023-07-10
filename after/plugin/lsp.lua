@@ -19,14 +19,11 @@ lsp.setup_nvim_cmp({
     mapping = cmp_mappings
 })
 
-lsp.set_preferences({
-    suggest_lsp_servers = true,
-    sign_icons = {
-        error = 'E',
-        warn = 'W',
-        hint = 'H',
-        info = 'I'
-    }
+lsp.set_sign_icons({
+    error = '💩',
+    warn = '😮',
+    info = '📚',
+    hint = '🔮'
 })
 
 -- [[ Configure LSP ]]
