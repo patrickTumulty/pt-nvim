@@ -29,7 +29,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Copy to system clipboard (\"
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to void register" })
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format, { desc = "LSP Format" })
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -38,3 +37,7 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>sf", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
     { desc = "Replace current word" })
+
+
+vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
+vim.keymap.set("n", "<leader>gc", "<cmd>LazyGitCurrentFile<cr>", { desc = "Lazy Git Curent File" })

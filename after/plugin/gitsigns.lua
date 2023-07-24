@@ -31,7 +31,7 @@ gs.setup {
             return '<Ignore>'
         end, "Previous Hunk", { expr = true })
 
-        map('n', '<leader>ph', gs.preview_hunk, '[P]review [H]unk')
+        map('n', '<leader>hp', gs.preview_hunk, '[H]unk [P]review')
         map('n', '<leader>hs', gs.stage_hunk, "Stage Hunk")
         map('n', '<leader>hr', gs.reset_hunk, "Reset Hunk")
         map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, "Stage Hunk")

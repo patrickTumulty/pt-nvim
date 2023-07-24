@@ -14,8 +14,20 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     'mbbill/undotree',
     -- Git related plugins
-    'tpope/vim-fugitive',
-    'tpope/vim-rhubarb',
+    { 'tpope/vim-fugitive' },
+    { 'tpope/vim-rhubarb' },
+    {
+        "kdheepak/lazygit.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+    },
+    { 'lewis6991/gitsigns.nvim' },
+    {
+        'akinsho/bufferline.nvim',
+        version = "*",
+        dependencies = 'nvim-tree/nvim-web-devicons'
+    },
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',
@@ -43,12 +55,7 @@ local plugins = {
             { 'rafamadriz/friendly-snippets' },
         }
     },
-    -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim',          opts = {} },
-    {
-        -- Adds git releated signs to the gutter, as well as utilities for managing changes
-        'lewis6991/gitsigns.nvim',
-    },
+    { 'folke/which-key.nvim',   opts = {} },
     {
         'navarasu/onedark.nvim',
         priority = 1000,
@@ -79,9 +86,7 @@ local plugins = {
             show_trailing_blankline_indent = false,
         },
     },
-    -- "gc" to comment visual regions/lines
     { 'numToStr/Comment.nvim',         opts = {} },
-    -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
 
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -96,9 +101,7 @@ local plugins = {
             return vim.fn.executable 'make' == 1
         end,
     },
-
     {
-        -- Highlight, edit, and navigate code
         'nvim-treesitter/nvim-treesitter',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
