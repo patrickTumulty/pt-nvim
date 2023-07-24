@@ -22,6 +22,7 @@ local plugins = {
             "nvim-lua/plenary.nvim",
         },
     },
+    { 'Civitasv/cmake-tools.nvim' },
     { 'lewis6991/gitsigns.nvim' },
     {
         'akinsho/bufferline.nvim',
