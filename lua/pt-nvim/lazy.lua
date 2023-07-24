@@ -57,10 +57,11 @@ local plugins = {
     },
     { 'folke/which-key.nvim',   opts = {} },
     {
-        'navarasu/onedark.nvim',
+        "catppuccin/nvim",
+        name = "catppuccin",
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme 'onedark'
+            vim.cmd.colorscheme 'catppuccin-macchiato'
         end,
     },
     {
@@ -70,7 +71,7 @@ local plugins = {
         opts = {
             options = {
                 icons_enabled = false,
-                theme = 'onedark',
+                theme = 'horizon',
                 component_separators = '|',
                 section_separators = '',
             },
