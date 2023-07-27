@@ -12,7 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-    'mbbill/undotree',
+    { 'mbbill/undotree', },
     -- Git related plugins
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
@@ -22,8 +22,11 @@ local plugins = {
             "nvim-lua/plenary.nvim",
         },
     },
+    { "sindrets/diffview.nvim" },
+    { 'm4xshen/autoclose.nvim' },
     { 'Civitasv/cmake-tools.nvim' },
     { 'lewis6991/gitsigns.nvim' },
+    { "NvChad/nvterm" },
     {
         'akinsho/bufferline.nvim',
         version = "*",
@@ -56,7 +59,7 @@ local plugins = {
             { 'rafamadriz/friendly-snippets' },
         }
     },
-    { 'folke/which-key.nvim',   opts = {} },
+    { 'folke/which-key.nvim',          opts = {} },
     {
         "catppuccin/nvim",
         name = "catppuccin",
