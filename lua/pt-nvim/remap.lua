@@ -44,6 +44,5 @@ vim.keymap.set("n", "<leader>sf", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left>
 
 
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })
-vim.keymap.set("n", "<leader>gc", "<cmd>LazyGitCurrentFile<cr>", { desc = "Lazy Git Curent File" })
 vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Diff View Open" })
-vim.keymap.set("n", "<leader>gf", "<cmd>LazyGitFilterCurrentFile<cr>", { desc = "Lazy Git File" })
+vim.keymap.set("n", "<leader>gc", "<cmd>LazyGitFilterCurrentFile<cr>", { desc = "Lazy Git File" })

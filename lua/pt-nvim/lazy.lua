@@ -17,21 +17,26 @@ local plugins = {
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
     {
-        "kdheepak/lazygit.nvim",
+        'kdheepak/lazygit.nvim',
         dependencies = {
-            "nvim-lua/plenary.nvim",
+            'nvim-lua/plenary.nvim',
         },
     },
-    { "sindrets/diffview.nvim" },
-    { 'm4xshen/autoclose.nvim' },
+    { 'sindrets/diffview.nvim' },
+    {
+        'windwp/nvim-autopairs',
+        event = 'InsertEnter',
+        opts = {} -- this is equalent to setup({}) function
+    },
     { 'Civitasv/cmake-tools.nvim' },
     { 'lewis6991/gitsigns.nvim' },
-    { "NvChad/nvterm" },
+    { 'NvChad/nvterm' },
     {
         'akinsho/bufferline.nvim',
-        version = "*",
+        version = '*',
         dependencies = 'nvim-tree/nvim-web-devicons'
     },
+    { 'mfussenegger/nvim-jdtls' },
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',
@@ -59,10 +64,13 @@ local plugins = {
             { 'rafamadriz/friendly-snippets' },
         }
     },
-    { 'folke/which-key.nvim',          opts = {} },
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
+        'folke/which-key.nvim',
+        opts = {}
+    },
+    {
+        'catppuccin/nvim',
+        name = 'catppuccin',
         priority = 1000,
         config = function()
             vim.cmd.colorscheme 'catppuccin-macchiato'
@@ -75,7 +83,7 @@ local plugins = {
         opts = {
             options = {
                 icons_enabled = false,
-                theme = 'horizon',
+                theme = 'onedark',
                 component_separators = '|',
                 section_separators = '',
             },
@@ -91,12 +99,15 @@ local plugins = {
             show_trailing_blankline_indent = false,
         },
     },
-    { 'numToStr/Comment.nvim',         opts = {} },
-    { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
-
-    -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-    -- Only load if `make` is available. Make sure you have the system
-    -- requirements installed.
+    {
+        'numToStr/Comment.nvim',
+        opts = {}
+    },
+    {
+        'nvim-telescope/telescope.nvim',
+        branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
     {
         'nvim-telescope/telescope-fzf-native.nvim',
         -- NOTE: If you are having trouble with this installation,

@@ -4,25 +4,20 @@ lsp.preset("recommended")
 
 lsp.ensure_installed({
     "rust_analyzer",
-    "lua_ls"
+    "lua_ls",
+    "clangd",
+    "jdtls",
+    "gradle_ls",
+    "pyright",
+    "bashls",
 })
 
 lsp.nvim_workspace()
 
-local cmp = require("cmp")
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    ["<Enter>"] = cmp.mapping.confirm({ select = true }),
-    ["<C-Space>"] = cmp.mapping.complete(),
-})
-
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
-})
-
 lsp.set_sign_icons({
     error = '💩',
     warn = '😮',
-    info = '📚',
+    info = '🧠',
     hint = '🔮'
 })
 
@@ -48,12 +43,14 @@ lsp.on_attach(function(_, bufnr)
 
     vim.keymap.set('v', '<leader>la', vim.lsp.buf.code_action, { desc = '[L]SP Code [A]ction' })
 
+    local telescope = require("telescope.builtin")
+
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('gr', telescope.lsp_references, '[G]oto [R]eferences')
+    nmap('gi', telescope.lsp_implementations, '[G]oto [I]mplementation')
     nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
@@ -74,7 +71,19 @@ lsp.on_attach(function(_, bufnr)
     vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "[L]SP [F]ormat" })
 end)
 
+lsp.skip_server_setup({'jdtls'})
+
 lsp.setup()
+
+local cmp = require("cmp")
+local cmp_mappings = lsp.defaults.cmp_mappings({
+    ["<CR>"] = cmp.mapping.confirm({ select = false }),
+    ["<C-Space>"] = cmp.mapping.complete(),
+})
+
+lsp.setup_nvim_cmp({
+    mapping = cmp_mappings
+})
 
 vim.diagnostic.config({
     virtual_text = true
