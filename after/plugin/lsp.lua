@@ -71,18 +71,16 @@ lsp.on_attach(function(_, bufnr)
     vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "[L]SP [F]ormat" })
 end)
 
-lsp.skip_server_setup({'jdtls'})
+lsp.skip_server_setup({ 'jdtls' })
 
 lsp.setup()
 
 local cmp = require("cmp")
-local cmp_mappings = lsp.defaults.cmp_mappings({
-    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-    ["<C-Space>"] = cmp.mapping.complete(),
-})
-
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+cmp.setup({
+    mapping = {
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+    }
 })
 
 vim.diagnostic.config({
