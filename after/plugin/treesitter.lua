@@ -12,7 +12,14 @@ treesitter.setup({
         "bash",
         "json",
         "kotlin",
-        "markdown"
+        "markdown",
+        "typescript",
+        "tsx",
+        "javascript",
+        "jsx",
+        "html",
+        "xml",
+        "css"
     },
     auto_install = true,
     highlight = {
@@ -21,4 +28,7 @@ treesitter.setup({
     indent = {
         enable = true
     },
+    autotag = {
+        enabled = true
+    }
 })

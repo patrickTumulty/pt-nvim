@@ -10,6 +10,8 @@ lsp.ensure_installed({
     "gradle_ls",
     "pyright",
     "bashls",
+    "eslint",
+    "tsserver"
 })
 
 lsp.nvim_workspace()
