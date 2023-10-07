@@ -16,7 +16,6 @@ treesitter.setup({
         "typescript",
         "tsx",
         "javascript",
-        "jsx",
         "html",
         "xml",
         "css"
