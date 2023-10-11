@@ -8,10 +8,10 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Go to netrw directory li
 
 local toggle_modes = { "n", "t" }
 
-vim.keymap.set(toggle_modes, "<C-h>", "<C-w><left>", { desc = "Move to split pane left" })
-vim.keymap.set(toggle_modes, "<C-j>", "<C-w><down>", { desc = "Move to split pane down" })
-vim.keymap.set(toggle_modes, "<C-k>", "<C-w><up>", { desc = "Move to split pane up" })
-vim.keymap.set(toggle_modes, "<C-l>", "<C-w><right>", { desc = "Move to split pane right" })
+vim.keymap.set(toggle_modes, "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "Move to split pane left" })
+vim.keymap.set(toggle_modes, "<C-j>", "<cmd> TmuxNavigateDown<CR>", { desc = "Move to split pane down" })
+vim.keymap.set(toggle_modes, "<C-k>", "<cmd> TmuxNavigateUp<CR>", { desc = "Move to split pane up" })
+vim.keymap.set(toggle_modes, "<C-l>", "<cmd> TmuxNavigateRight<CR>", { desc = "Move to split pane right" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

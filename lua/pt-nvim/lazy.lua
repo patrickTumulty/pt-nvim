@@ -13,6 +13,10 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
     { 'mbbill/undotree', },
+    {
+        'christoomey/vim-tmux-navigator',
+        lazy = false
+    },
     -- Git related plugins
     { 'tpope/vim-fugitive' },
     { 'tpope/vim-rhubarb' },
