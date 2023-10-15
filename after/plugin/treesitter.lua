@@ -17,7 +17,6 @@ treesitter.setup({
         "tsx",
         "javascript",
         "html",
-        "xml",
         "css"
     },
     auto_install = true,
