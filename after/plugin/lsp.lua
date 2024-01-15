@@ -1,22 +1,6 @@
-local lsp = require("lsp-zero")
+local lsp_zero = require("lsp-zero")
 
-lsp.preset("recommended")
-
-lsp.ensure_installed({
-    "rust_analyzer",
-    "lua_ls",
-    "clangd",
-    "jdtls",
-    "gradle_ls",
-    "pyright",
-    "bashls",
-    "eslint",
-    "tsserver"
-})
-
-lsp.nvim_workspace()
-
-lsp.set_sign_icons({
+lsp_zero.set_sign_icons({
     error = '💩',
     warn = '😮',
     info = '🧠',
@@ -25,7 +9,7 @@ lsp.set_sign_icons({
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-lsp.on_attach(function(_, bufnr)
+lsp_zero.on_attach(function(_, bufnr)
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -50,7 +34,6 @@ lsp.on_attach(function(_, bufnr)
     nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap('gr', telescope.lsp_references, '[G]oto [R]eferences')
     nmap('gi', telescope.lsp_implementations, '[G]oto [I]mplementation')
-    nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
     nmap('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
     nmap('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
     -- See `:help K` for why this keymap
@@ -58,7 +41,6 @@ lsp.on_attach(function(_, bufnr)
     nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     -- Lesser used LSP functionality
-    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
     nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
     nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
     nmap('<leader>wl', function()
@@ -70,19 +52,40 @@ lsp.on_attach(function(_, bufnr)
         vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
 
-    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { desc = "[L]SP [F]ormat" })
+    nmap('<leader>lf', vim.lsp.buf.format, "[L]SP [F]ormat")
 end)
 
-lsp.skip_server_setup({ 'jdtls' })
+lsp_zero.setup()
 
-lsp.setup()
+--- if you want to know more about lsp-zero and mason.nvim
+--- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = {
+        'rust_analyzer',
+    },
+    handlers = {
+        lsp_zero.default_setup,
+        lua_ls = function()
+            local lua_opts = lsp_zero.nvim_lua_ls()
+            require('lspconfig').lua_ls.setup(lua_opts)
+        end,
+    }
+})
 
-local cmp = require("cmp")
+
+local cmp = require('cmp')
+local cmp_format = lsp_zero.cmp_format()
+
 cmp.setup({
-    mapping = {
+    formatting = cmp_format,
+    mapping = cmp.mapping.preset.insert({
+        -- scroll up and down the documentation window
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
         ["<CR>"] = cmp.mapping.confirm({ select = true }),
         ["<C-Space>"] = cmp.mapping.complete(),
-    }
+    }),
 })
 
 vim.diagnostic.config({

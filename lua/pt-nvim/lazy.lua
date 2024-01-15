@@ -26,48 +26,32 @@ local plugins = {
             'nvim-lua/plenary.nvim',
         },
     },
-    { 'sindrets/diffview.nvim' },
+    { 'lewis6991/gitsigns.nvim' },
+
     {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
         opts = {} -- this is equalent to setup({}) function
     },
     { 'Civitasv/cmake-tools.nvim' },
-    { 'lewis6991/gitsigns.nvim' },
-    { 'NvChad/nvterm' },
     {
         'akinsho/bufferline.nvim',
         version = '*',
         dependencies = 'nvim-tree/nvim-web-devicons'
     },
-    { 'mfussenegger/nvim-jdtls' },
     {
         'VonHeikemen/lsp-zero.nvim',
-        branch = 'v2.x',
-        dependencies = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' }, -- Required
-            {                            -- Optional
-                'williamboman/mason.nvim',
-                build = function()
-                    ---@diagnostic disable-next-line: param-type-mismatch
-                    pcall(vim.cmd, 'MasonUpdate')
-                end,
-            },
-            { 'williamboman/mason-lspconfig.nvim' }, -- Optional
-
-            -- Autocompletion
-            { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'saadparwaiz1/cmp_luasnip' },
-            { 'hrsh7th/cmp-nvim-lua' },
-
-            { 'L3MON4D3/LuaSnip' }, -- Required
-            { 'rafamadriz/friendly-snippets' },
-        }
+        branch = 'v3.x'
     },
+    -- LSP Support
+    { 'neovim/nvim-lspconfig' },
+    { 'williamboman/mason.nvim' },
+    { 'williamboman/mason-lspconfig.nvim' },
+
+    -- Autocompletion
+    { 'hrsh7th/nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'L3MON4D3/LuaSnip' },
     {
         'folke/which-key.nvim',
         opts = {}
@@ -109,14 +93,6 @@ local plugins = {
             vim.cmd("colorscheme doom-one")
         end,
     },
-    -- {
-    --     'catppuccin/nvim',
-    --     name = 'catppuccin',
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd.colorscheme 'catppuccin-macchiato'
-    --     end,
-    -- },
     {
         -- Set lualine as statusline
         'nvim-lualine/lualine.nvim',
@@ -131,14 +107,9 @@ local plugins = {
         },
     },
     {
-        -- Add indentation guides even on blank lines
-        'lukas-reineke/indent-blankline.nvim',
-        -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help indent_blankline.txt`
-        opts = {
-            char = '┊',
-            show_trailing_blankline_indent = false,
-        },
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {}
     },
     {
         'numToStr/Comment.nvim',
