@@ -1,6 +1,3 @@
-require("pt-nvim.remap")
-require("pt-nvim.lazy")
-require("pt-nvim.neovide")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`

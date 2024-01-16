@@ -5,7 +5,6 @@ vim.keymap.set("i", "<S-TAB>", "<C-d>")
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Go to netrw directory listing" })
 
-
 local toggle_modes = { "n", "t" }
 
 vim.keymap.set(toggle_modes, "<C-h>", "<cmd> TmuxNavigateLeft<CR>", { desc = "Move to split pane left" })
