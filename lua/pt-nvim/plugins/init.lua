@@ -6,16 +6,6 @@ return {
     },
     -- Git related plugins
     { 'tpope/vim-fugitive' },
-    { 'tpope/vim-rhubarb' },
-    {
-        'kdheepak/lazygit.nvim',
-
-
-
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-        },
-    },
     {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
