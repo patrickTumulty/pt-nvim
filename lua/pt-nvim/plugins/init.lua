@@ -4,8 +4,6 @@ return {
         'christoomey/vim-tmux-navigator',
         lazy = false
     },
-    -- Git related plugins
-    { 'tpope/vim-fugitive' },
     {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
