@@ -9,6 +9,10 @@ return {
         event = 'InsertEnter',
         opts = {} -- this is equalent to setup({}) function
     },
+    { 'rcarriga/nvim-dap-ui' },
+    { 'mfussenegger/nvim-dap' },
+    { 'theHamsta/nvim-dap-virtual-text' },
+    { 'nvim-telescope/telescope-dap.nvim' },
     {
         'folke/which-key.nvim',
         opts = {}

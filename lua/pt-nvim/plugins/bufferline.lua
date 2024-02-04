@@ -15,7 +15,6 @@ return {
             },
         }
 
-        vim.keymap.set("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", { desc = "[B]uffer Toggle [P]in" })
         vim.keymap.set("n", "<leader>bj", "<cmd>BufferLinePick<cr>", { desc = "[B]uffer [J]ump" })
         vim.keymap.set("n", "<leader>bc", "<cmd>BufferLinePickClose<cr>", { desc = "Select [B]uffer to [C]lose" })
         vim.keymap.set("n", "<leader>bb", "<cmd>BufferLineCyclePrev<cr>", { desc = "Buffer [B]ack" })
