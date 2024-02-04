@@ -1,8 +1,16 @@
 return {
+    { "sindrets/diffview.nvim" },
     {
-        'tpope/vim-fugitive',
-        config = function()
-            vim.keymap.set("n", "<leader>gg", "<cmd>Git<cr>", { desc = "Fugitive: [G]it" })
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        config = true,
+        init = function()
+            vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit: [G]it" })
         end
     },
     {
