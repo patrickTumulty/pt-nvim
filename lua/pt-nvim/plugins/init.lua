@@ -9,6 +9,7 @@ return {
         event = 'InsertEnter',
         opts = {} -- this is equalent to setup({}) function
     },
+    { "j-hui/fidget.nvim" },
     { 'rcarriga/nvim-notify' },
     { 'rcarriga/nvim-dap-ui' },
     { 'mfussenegger/nvim-dap' },
