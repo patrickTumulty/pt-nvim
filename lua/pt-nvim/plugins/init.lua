@@ -9,6 +9,7 @@ return {
         event = 'InsertEnter',
         opts = {} -- this is equalent to setup({}) function
     },
+    { 'rcarriga/nvim-notify' },
     { 'rcarriga/nvim-dap-ui' },
     { 'mfussenegger/nvim-dap' },
     { 'theHamsta/nvim-dap-virtual-text' },
@@ -23,7 +24,7 @@ return {
         -- See `:help lualine.txt`
         opts = {
             options = {
-                icons_enabled = false,
+                icons_enabled = true,
                 theme = 'onedark',
                 component_separators = '|',
                 section_separators = '',
