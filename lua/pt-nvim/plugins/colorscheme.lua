@@ -1,9 +1,8 @@
 return {
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        'NTBBloodbath/doom-one.nvim',
         config = function()
-            vim.cmd("colorscheme rose-pine-moon")
-        end
+            vim.cmd("colorscheme doom-one")
+        end,
     }
 }
