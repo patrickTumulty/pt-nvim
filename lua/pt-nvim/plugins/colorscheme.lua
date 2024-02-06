@@ -15,9 +15,13 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
+        config = true 
+    },
+    {
+        "briones-gabriel/darcula-solid.nvim",
+        dependencies = "rktjmp/lush.nvim",
         config = function()
-            vim.cmd("colorscheme catppuccin-macchiato")
-            return true
+            vim.cmd("colorscheme darcula-solid")
         end,
     }
 }
