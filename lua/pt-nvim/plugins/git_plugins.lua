@@ -27,6 +27,7 @@ return {
                     topdelete = { text = '‾' },
                     changedelete = { text = '~' },
                 },
+                _signs_staged_enable = true,
                 on_attach = function(bufnr)
                     local function map(mode, l, r, desc, opts)
                         local opt = opts or {}
