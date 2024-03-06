@@ -1,9 +1,6 @@
 return {
     {
         'NTBBloodbath/doom-one.nvim',
-        config = function()
-            vim.cmd("colorscheme doom-one")
-        end,
     },
     {
         "folke/tokyonight.nvim",
@@ -24,4 +21,13 @@ return {
         "briones-gabriel/darcula-solid.nvim",
         dependencies = "rktjmp/lush.nvim",
     },
+    {
+        'navarasu/onedark.nvim',
+        config = function()
+            require("onedark").setup({
+                style = "warm"
+            })
+            vim.cmd("colorscheme onedark")
+        end,
+    }
 }
