@@ -2,6 +2,20 @@ return {
     {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v3.x',
+        dependencies = {
+            -- LSP Support
+            { 'neovim/nvim-lspconfig' },
+            { 'williamboman/mason.nvim' },
+            { 'williamboman/mason-lspconfig.nvim' },
+
+            -- Autocompletion
+            { 'hrsh7th/nvim-cmp' },
+            { 'hrsh7th/cmp-nvim-lsp' },
+            { 'L3MON4D3/LuaSnip' },
+
+            -- Omnisharp
+            { 'Hoffs/omnisharp-extended-lsp.nvim' }
+        },
         config = function()
             local lsp_zero = require("lsp-zero")
             lsp_zero.extend_lspconfig()
@@ -63,6 +77,8 @@ return {
 
             lsp_zero.setup()
 
+            local lsp_config = require("lspconfig")
+
             --- if you want to know more about lsp-zero and mason.nvim
             --- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
             require('mason').setup({})
@@ -74,11 +90,18 @@ return {
                     lsp_zero.default_setup,
                     lua_ls = function()
                         local lua_opts = lsp_zero.nvim_lua_ls()
-                        require('lspconfig').lua_ls.setup(lua_opts)
+                        lsp_config.lua_ls.setup(lua_opts)
                     end,
+                    omnisharp = function()
+                        lsp_config.omnisharp.setup({
+                            handlers = {
+                                ['textDocument/definition'] = require("omnisharp_extended").handlers,
+                            },
+                            cmd = { os.getenv('HOME') .. '/.local/share/nvim/mason/bin/omnisharp', '--languageserver' },
+                        })
+                    end
                 }
             })
-
 
             local cmp = require('cmp')
             local cmp_format = lsp_zero.cmp_format()
@@ -99,13 +122,4 @@ return {
             })
         end,
     },
-    -- LSP Support
-    { 'neovim/nvim-lspconfig' },
-    { 'williamboman/mason.nvim' },
-    { 'williamboman/mason-lspconfig.nvim' },
-
-    -- Autocompletion
-    { 'hrsh7th/nvim-cmp' },
-    { 'hrsh7th/cmp-nvim-lsp' },
-    { 'L3MON4D3/LuaSnip' },
 }

@@ -1,6 +1,9 @@
 return {
     {
         'NTBBloodbath/doom-one.nvim',
+        config = function()
+            vim.cmd("colorscheme doom-one")
+        end,
     },
     {
         "folke/tokyonight.nvim",
@@ -15,13 +18,10 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
-        config = true 
+        config = true
     },
     {
         "briones-gabriel/darcula-solid.nvim",
         dependencies = "rktjmp/lush.nvim",
-        config = function()
-            vim.cmd("colorscheme darcula-solid")
-        end,
-    }
+    },
 }
