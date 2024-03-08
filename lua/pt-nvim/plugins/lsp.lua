@@ -60,6 +60,12 @@ return {
                 nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
                 nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
+                -- Turn off inline diagnostics
+                vim.diagnostic.config({
+                    virtual_text = false,
+                })
+                nmap("<leader>ld", ':lua vim.diagnostic.open_float()<CR>', "[L]SP [D]iagnostics")
+
                 -- Lesser used LSP functionality
                 nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
                 nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
@@ -84,7 +90,6 @@ return {
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 ensure_installed = {
-                    'rust_analyzer',
                 },
                 handlers = {
                     lsp_zero.default_setup,
