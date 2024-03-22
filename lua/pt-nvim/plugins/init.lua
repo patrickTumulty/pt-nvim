@@ -12,7 +12,12 @@ return {
     { "j-hui/fidget.nvim" },
     { 'rcarriga/nvim-notify' },
     { 'rcarriga/nvim-dap-ui' },
-    { 'mfussenegger/nvim-dap' },
+    {
+        'mfussenegger/nvim-dap',
+        dependencies = {
+            { "nvim-neotest/nvim-nio" }
+        }
+    },
     { 'theHamsta/nvim-dap-virtual-text' },
     { 'nvim-telescope/telescope-dap.nvim' },
     {

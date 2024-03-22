@@ -1,21 +1,23 @@
 return {
     { "sindrets/diffview.nvim" },
+    { 'tpope/vim-fugitive' },
     {
         "NeogitOrg/neogit",
         dependencies = {
             "nvim-lua/plenary.nvim",         -- required
             "sindrets/diffview.nvim",        -- optional - Diff integration
-
             "nvim-telescope/telescope.nvim", -- optional
         },
         config = true,
         init = function()
             vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit: [G]it" })
+            vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<cr>", { desc = "Diffview: [D]iffview [O]pen" })
+            vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "Diffview: [D]iffview [C]lose" })
+            vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "Diffview: [D]iffview Current [F]ile History" })
         end
     },
     {
         'lewis6991/gitsigns.nvim',
-
         config = function()
             local gs = require("gitsigns")
 

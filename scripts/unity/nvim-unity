@@ -1,0 +1,2 @@
+#!/bin/bash
+kitty nvr --servername "/tmp/nvim-unity" --remote-tab-silent $@ 
