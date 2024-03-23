@@ -102,11 +102,11 @@ return {
                             handlers = {
                                 ['textDocument/definition'] = require("omnisharp_extended").handlers,
                             },
-                            cmd = { os.getenv('HOME') .. '/.local/share/nvim/mason/bin/omnisharp', '--languageserver' },
-                            enable_roslyn_analyzers = true,
-                            analyze_open_documents_only = true,
+                            cmd = { os.getenv('HOME') .. '/.local/share/nvim/mason/bin/omnisharp' },
                             organize_imports_on_format = true,
-                            enable_import_completion = true,
+                            enable_roslyn_analyzers = false,
+                            analyze_open_documents_only = false,
+                            enable_import_completion = false,
                         })
                     end
                 }
