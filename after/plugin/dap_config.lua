@@ -1,5 +1,6 @@
 local dap = require("dap")
 local dap_ui = require("dapui")
+local dap_ui_widgets = require('dap.ui.widgets')
 
 -- Keymaps
 vim.keymap.set("n", "<leader>bp", function() dap.toggle_breakpoint() end, { desc = "Toggle [B]reak[p]oint" })
@@ -8,7 +9,8 @@ vim.keymap.set("n", "<leader>ds", function() dap.continue() end, { desc = "Debug
 vim.keymap.set("n", "<leader>di", function() dap.step_into() end, { desc = "Debug: [S]tep [I]nto" })
 vim.keymap.set("n", "<leader>dn", function() dap.step_over() end, { desc = "Debug: [S]tep Over" })
 vim.keymap.set("n", "<leader>dp", function() dap.step_out() end, { desc = "Debug: [S]tep Out" })
-vim.keymap.set("n", "<leader>dh", function() dap.step_out() end, { desc = "Debug: [H]over" })
+vim.keymap.set({ 'n', 'v' }, '<Leader>dh', function() dap_ui_widgets.hover() end, { desc = "Debug: [H]over" })
+vim.keymap.set('n', '<Leader>dl', function() dap_ui_widgets.centered_float(dap_ui_widgets.scopes) end, { desc = 'Debug: Scopes'})
 
 -- codelldb config
 local codelldb_port = "65472"
@@ -62,16 +64,16 @@ local coreclr = {
 dap.configurations.cs = { coreclr }
 
 dap.listeners.before.attach.dapui_config = function()
-  dap_ui.open()
+    dap_ui.open()
 end
 dap.listeners.before.launch.dapui_config = function()
-  dap_ui.open()
+    dap_ui.open()
 end
 dap.listeners.before.event_terminated.dapui_config = function()
-  dap_ui.close()
+    dap_ui.close()
 end
 dap.listeners.before.event_exited.dapui_config = function()
-  dap_ui.close()
+    dap_ui.close()
 end
 
 dap_ui.setup()
