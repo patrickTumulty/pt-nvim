@@ -54,8 +54,8 @@ return {
                 nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
                 nmap('gr', telescope.lsp_references, '[G]oto [R]eferences')
                 nmap('gi', telescope.lsp_implementations, '[G]oto [I]mplementation')
-                nmap('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
-                nmap('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+                nmap('<leader>ls', telescope.lsp_document_symbols, 'Document [S]ymbols')
+                nmap('<leader>lw', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace Symbols')
                 -- See `:help K` for why this keymap
                 nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
                 nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')

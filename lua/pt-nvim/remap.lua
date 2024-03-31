@@ -39,5 +39,3 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "][", "<C-o>", { desc = "Jump List: Backward" })
 vim.keymap.set("n", "[]", "<C-i>", { desc = "Jump List: Forward" })
 
-vim.keymap.set("n", "<leader>sf", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
-    { desc = "Replace current word" })
