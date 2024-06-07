@@ -8,18 +8,15 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Go to netrw directory li
 vim.keymap.set("n", "U", vim.cmd.redo, { desc = "Redo" })
 vim.keymap.set("v", "U", vim.cmd.redo, { desc = "Redo" })
 
-local toggle_modes = { "n", "t" }
+-- Comementing these lines out because the vim-tmux-navigator plugin 
+-- adds it them automatically
 
-vim.keymap.set(toggle_modes, "<C-a>h", "<cmd> TmuxNavigateLeft<CR>", { desc = "(Tmux) Move to split pane left" })
-vim.keymap.set(toggle_modes, "<C-a>j", "<cmd> TmuxNavigateDown<CR>", { desc = "(Tmux) Move to split pane down" })
-vim.keymap.set(toggle_modes, "<C-a>k", "<cmd> TmuxNavigateUp<CR>", { desc = "(Tmux) Move to split pane up" })
-vim.keymap.set(toggle_modes, "<C-a>l", "<cmd> TmuxNavigateRight<CR>", { desc = "(Tmux) Move to split pane right" })
+-- local toggle_modes = { "n", "t" }
 
-vim.keymap.set(toggle_modes, "<C-h>", "<C-w>h", { desc = "Move to split pane left" })
-vim.keymap.set(toggle_modes, "<C-j>", "<C-w>j", { desc = "Move to split pane down" })
-vim.keymap.set(toggle_modes, "<C-k>", "<C-w>k", { desc = "Move to split pane up" })
-vim.keymap.set(toggle_modes, "<C-l>", "<C-w>l", { desc = "Move to split pane right" })
-
+-- vim.keymap.set(toggle_modes, "<C-h>", "<C-w>h", { desc = "Move to split pane left" })
+-- vim.keymap.set(toggle_modes, "<C-j>", "<C-w>j", { desc = "Move to split pane down" })
+-- vim.keymap.set(toggle_modes, "<C-k>", "<C-w>k", { desc = "Move to split pane up" })
+-- vim.keymap.set(toggle_modes, "<C-l>", "<C-w>l", { desc = "Move to split pane right" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
