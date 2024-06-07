@@ -17,6 +17,15 @@ return {
             })
         end, { desc = 'Telescope: [/] Fuzzily search in current buffer' })
 
+        require("telescope").setup({
+            defaults = {
+                layout_strategy = "vertical",
+                layout_config = {
+                    vertical = { width = 0.7 }
+                }
+            }
+        })
+
         vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Telescope: Search [G]it [F]iles' })
         vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope: [F]ind [F]iles' })
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope: [F]ind [H]elp' })
@@ -27,6 +36,5 @@ return {
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
         vim.keymap.set('n', '<leader>fs', builtin.treesitter, { desc = 'Telescope: [F]ind [S]ymbols' })
-
     end,
 }
