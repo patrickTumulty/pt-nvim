@@ -26,7 +26,8 @@ return {
             defaults = {
                 layout_strategy = "vertical",
                 layout_config = {
-                    vertical = { width = 0.7 }
+                    vertical = { width = 0.7 },
+                    preview_cutoff = 1
                 }
             }
         })
