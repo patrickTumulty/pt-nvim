@@ -18,6 +18,11 @@ return {
         end, { desc = 'Telescope: [/] Fuzzily search in current buffer' })
 
         require("telescope").setup({
+            pickers = {
+                find_files = {
+                    hidden = true
+                }
+            },
             defaults = {
                 layout_strategy = "vertical",
                 layout_config = {

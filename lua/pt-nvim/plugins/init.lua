@@ -18,6 +18,12 @@ return {
             { "nvim-neotest/nvim-nio" }
         }
     },
+    {
+        'tzachar/local-highlight.nvim',
+        config = function()
+            require('local-highlight').setup()
+        end
+    },
     { 'theHamsta/nvim-dap-virtual-text' },
     { 'nvim-telescope/telescope-dap.nvim' },
     {
@@ -31,7 +37,7 @@ return {
         opts = {
             options = {
                 icons_enabled = true,
-                theme = 'onedark',
+                theme = 'auto',
                 component_separators = '|',
                 section_separators = '',
             },

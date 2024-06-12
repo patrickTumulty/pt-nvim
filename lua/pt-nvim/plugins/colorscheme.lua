@@ -15,7 +15,9 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
-        config = true
+        config = function()
+            vim.cmd("colorscheme catppuccin-frappe")
+        end,
     },
     {
         "briones-gabriel/darcula-solid.nvim",
@@ -23,11 +25,11 @@ return {
     },
     {
         'navarasu/onedark.nvim',
-        config = function()
-            require("onedark").setup({
-                style = "warm"
-            })
-            vim.cmd("colorscheme onedark")
-        end,
+        -- config = function()
+        --     require("onedark").setup({
+        --         style = "warm"
+        --     })
+        --     vim.cmd("colorscheme onedark")
+        -- end,
     }
 }

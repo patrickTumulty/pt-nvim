@@ -3,7 +3,8 @@ vim.g.maplocalleader = " "
 
 vim.keymap.set("i", "<S-TAB>", "<C-d>")
 
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Go to netrw directory listing" })
+-- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Go to netrw directory listing" })
+vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "(OIL) Go to directory listing" })
 
 vim.keymap.set("n", "U", vim.cmd.redo, { desc = "Redo" })
 vim.keymap.set("v", "U", vim.cmd.redo, { desc = "Redo" })
