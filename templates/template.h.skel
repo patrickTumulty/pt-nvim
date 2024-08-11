@@ -1,0 +1,5 @@
+
+#ifndef ${FILE_NAME}_H
+#define ${FILE_NAME}_H
+
+#endif // ${FILE_NAME}_H

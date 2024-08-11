@@ -1,0 +1,14 @@
+
+#ifndef ${FILE_NAME}_HPP
+#define ${FILE_NAME}_HPP
+
+class ${FileName}
+{
+public:
+    ${FileName}();
+
+private:
+
+};
+
+#endif // ${FILE_NAME}_HPP
