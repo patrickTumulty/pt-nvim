@@ -57,7 +57,7 @@ return {
 
                 local telescope = require("telescope.builtin")
 
-                nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+                nmap('gd', telescope.lsp_definitions, '[G]oto [D]efinition')
                 nmap('gr', telescope.lsp_references, '[G]oto [R]eferences')
                 nmap('gi', telescope.lsp_implementations, '[G]oto [I]mplementation')
                 nmap('<leader>ls', telescope.lsp_document_symbols, 'Document [S]ymbols')
