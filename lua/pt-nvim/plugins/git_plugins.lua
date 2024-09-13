@@ -10,10 +10,12 @@ return {
         },
         config = true,
         init = function()
-            vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit: [G]it" })
+            -- see git_open.lua
+            -- vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit: [G]it" })
             vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<cr>", { desc = "Diffview: [D]iffview [O]pen" })
             vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "Diffview: [D]iffview [C]lose" })
-            vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>", { desc = "Diffview: [D]iffview Current [F]ile History" })
+            vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>",
+                { desc = "Diffview: [D]iffview Current [F]ile History" })
         end
     },
     {
