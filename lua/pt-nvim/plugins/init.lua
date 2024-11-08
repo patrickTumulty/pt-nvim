@@ -57,4 +57,10 @@ return {
             return vim.fn.executable 'make' == 1
         end,
     },
+    {
+        'NvChad/nvim-colorizer.lua',
+        config = function ()
+            require("colorizer").setup()
+        end
+    },
 }
