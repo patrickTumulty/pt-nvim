@@ -20,9 +20,13 @@ return {
     },
     {
         'tzachar/local-highlight.nvim',
+        dependencies = {
+            { "folke/snacks.nvim" }
+        },
         config = function()
             require('local-highlight').setup()
         end
+
     },
     { 'theHamsta/nvim-dap-virtual-text' },
     { 'nvim-telescope/telescope-dap.nvim' },
@@ -59,7 +63,7 @@ return {
     },
     {
         'NvChad/nvim-colorizer.lua',
-        config = function ()
+        config = function()
             require("colorizer").setup()
         end
     },
