@@ -1,12 +1,12 @@
-
 local function onLspAttach(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client == nil then
-        return
-    end
-    if client:supports_method('textDocument/completion') then
-        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-    end
+
+    --
+    -- COMMENTED OUT BECAUSE I'M USING blink.cmp
+    --
+    -- local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    -- if client:supports_method('textDocument/completion') then
+    --     vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    -- end
 
     local bufnr = ev.buf
 
@@ -54,6 +54,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
         onLspAttach(ev)
     end,
+})
+
+local blink_caps = require('blink.cmp').get_lsp_capabilities()
+
+vim.lsp.config('*', {
+    capabilities = blink_caps,
 })
 
 vim.diagnostic.config({
