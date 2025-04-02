@@ -1,9 +1,8 @@
-require("pt-nvim.remap")
-require("lsp-setup")
-require("pt-nvim.vim-config")
-require("pt-nvim.lazy")
-require("pt-nvim.neovide")
-require("pt-nvim.template")
-require("pt-nvim.xdotool")
+require("config.remap")
+require("config.lsp-setup")
+require("config.vim-config")
+require("config.lazy")
+require("config.template")
+-- require("config.xdotool")
 
 
