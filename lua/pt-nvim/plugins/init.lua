@@ -11,25 +11,28 @@ return {
     },
     { "j-hui/fidget.nvim" },
     { 'rcarriga/nvim-notify' },
-    { 'rcarriga/nvim-dap-ui' },
-    {
-        'mfussenegger/nvim-dap',
-        dependencies = {
-            { "nvim-neotest/nvim-nio" }
-        }
-    },
+    -- { 'rcarriga/nvim-dap-ui' },
+    -- {
+    --     'mfussenegger/nvim-dap',
+    --     dependencies = {
+    --         { "nvim-neotest/nvim-nio" }
+    --     }
+    -- },
     {
         'tzachar/local-highlight.nvim',
         dependencies = {
-            { "folke/snacks.nvim" }
+            {
+                "folke/snacks.nvim",
+                lazy = false
+            }
         },
         config = function()
             require('local-highlight').setup()
         end
 
     },
-    { 'theHamsta/nvim-dap-virtual-text' },
-    { 'nvim-telescope/telescope-dap.nvim' },
+    -- { 'theHamsta/nvim-dap-virtual-text' },
+    -- { 'nvim-telescope/telescope-dap.nvim' },
     {
         'folke/which-key.nvim',
         opts = {}
