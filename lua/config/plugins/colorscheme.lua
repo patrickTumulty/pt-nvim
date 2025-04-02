@@ -3,10 +3,7 @@ return {
         'NTBBloodbath/doom-one.nvim',
     },
     {
-        "folke/tokyonight.nvim",
-        lazy = false,
-    },
-    {
+        "folke/tokyonight.nvim", lazy = false, }, {
         "ellisonleao/gruvbox.nvim",
         priority = 1000,
     },

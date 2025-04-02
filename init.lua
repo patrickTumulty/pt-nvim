@@ -3,6 +3,6 @@ require("config.lsp-setup")
 require("config.vim-config")
 require("config.lazy")
 require("config.template")
--- require("config.xdotool")
+require("config.xdotool")
 
 
