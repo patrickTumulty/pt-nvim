@@ -43,3 +43,5 @@ vim.opt.colorcolumn = "100"
 vim.wo.signcolumn = 'yes'
 
 vim.o.completeopt = 'menuone,noselect'
+
+vim.g.netrw_sort_sequence = "[\\/]$,*"

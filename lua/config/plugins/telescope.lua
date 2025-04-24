@@ -28,6 +28,9 @@ return {
                 layout_config = {
                     vertical = { width = 0.7 },
                     preview_cutoff = 1
+                },
+                file_ignore_patterns = {
+                    ".git"
                 }
             }
         })
@@ -41,6 +44,5 @@ return {
         vim.keymap.set('n', '<leader>bh', builtin.git_bcommits, { desc = 'Telescope: [B]uffer Git [H]istory' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
-        vim.keymap.set('n', '<leader>fs', builtin.treesitter, { desc = 'Telescope: [F]ind [S]ymbols' })
     end,
 }

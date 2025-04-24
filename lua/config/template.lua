@@ -43,7 +43,7 @@ local function contains_substring(str, substr)
     return start_pos ~= nil
 end
 
-local function toSnake(str, upper)
+local function to_snake(str, upper)
     str = str:gsub("([a-z])([A-Z])", "%1_%2")
     if upper then
         return str:upper()
@@ -52,7 +52,7 @@ local function toSnake(str, upper)
     end
 end
 
-local function toCamel(str)
+local function to_camel(str)
     str = str:gsub("_", " ")
     str = str:gsub("(%a)([%w_']*)", function(first, rest)
         return first:upper() .. rest
@@ -69,13 +69,13 @@ local function write_skeleton_file_to_buffer(filepath, extension)
     for i, line in ipairs(lines) do
         if contains_substring(line, "${FILE_NAME}") then
             -- Upper snake case filename
-            lines[i] = line:gsub("${FILE_NAME}", toSnake(buf_name, true))
+            lines[i] = line:gsub("${FILE_NAME}", to_snake(buf_name, true))
         elseif contains_substring(line, "${file_name}") then
             -- Lower snake case filename
-            lines[i] = line:gsub("${file_name}", toSnake(buf_name, false))
+            lines[i] = line:gsub("${file_name}", to_snake(buf_name, false))
         elseif contains_substring(line, "${FileName}") then
             -- Camel case filename
-            lines[i] = line:gsub("${FileName}", toCamel(buf_name))
+            lines[i] = line:gsub("${FileName}", to_camel(buf_name))
         elseif contains_substring(line, "${filename}") then
             -- No formatting on filename
             lines[i] = line:gsub("${filename}", buf_name)
