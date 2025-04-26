@@ -125,33 +125,26 @@ vim.api.nvim_create_autocmd("User", {
             return
         end
 
-        local is_create = false
-        local target_action = nil
         for _, action in ipairs(args.data.actions) do
-            if action.type == "create" then
-                is_create = true
-                target_action = action
-                break
-            end
-        end
-
-        if not is_create or target_action == nil then
-            return
-        end
-
-        local path = target_action.url
-        path = path:gsub("oil:///", "/")
-        local filename = path:match("([^/\\]+)$")
-
-        for _, template_info in ipairs(template_info_list) do
-            if not filename:match(template_info.pattern) then
+            if action.type ~= "create" then
                 goto continue
             end
-            local skeleton_file_path = config_path .. "/templates/template." .. template_info.ext .. ".skel"
-            if not file_exists(skeleton_file_path) then
-                goto continue
+            local path = action.url
+            path = path:gsub("oil:///", "/")
+            local filename = path:match("([^/\\]+)$")
+
+            for _, template_info in ipairs(template_info_list) do
+                if not filename:match(template_info.pattern) then
+                    goto continue2
+                end
+                local skeleton_file_path = config_path .. "/templates/template." .. template_info.ext .. ".skel"
+                if not file_exists(skeleton_file_path) then
+                    goto continue2
+                end
+                write_skeleton_file_to_file(skeleton_file_path, path, template_info.ext)
+                ::continue2::
             end
-            write_skeleton_file_to_file(skeleton_file_path, path, template_info.ext)
+
             ::continue::
         end
     end,
