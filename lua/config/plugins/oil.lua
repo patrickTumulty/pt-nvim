@@ -11,7 +11,7 @@ return {
                     return vim.startswith(name, ".")
                 end,
             },
-            default_file_explorer = false,
+            -- default_file_explorer = false, -- disable netrw
             keymaps = {
                 ["g?"] = { "actions.show_help", mode = "n" },
                 ["<CR>"] = "actions.select",
