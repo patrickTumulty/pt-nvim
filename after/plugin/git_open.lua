@@ -1,5 +1,9 @@
 local relative_repos = {}
 
+local function echoerror(msg)
+    vim.api.nvim_echo(msg, false, { err = true })
+end
+
 local function get_local_repo_paths()
     local uv = vim.uv
     local cwd = vim.fn.getcwd()
@@ -15,7 +19,8 @@ local function get_local_repo_paths()
         stdio = { nil, stdout, stderr }
     }, function(code, signal)
         if code ~= 0 then
-            vim.api.nvim_err_writeln("find command failed with code " .. code .. " and signal " .. signal)
+            local msg = "find command failed with code " .. code .. " and signal " .. signal
+            echoerror(msg)
         end
         stdout:read_stop()
         stderr:read_stop()
@@ -28,7 +33,7 @@ local function get_local_repo_paths()
     local i = 1
     uv.read_start(stdout, function(err, data)
         if err then
-            vim.api.nvim_err_writeln(err)
+            echoerror(err)
             return
         end
         if not data then
@@ -48,6 +53,7 @@ local function get_local_repo_paths()
     -- Read the stderr and print any errors
     uv.read_start(stderr, function(err, data)
         if err then
+            err(err)
             vim.api.nvim_err_writeln(err)
         end
     end)
