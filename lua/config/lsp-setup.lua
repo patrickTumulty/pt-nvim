@@ -58,6 +58,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local blink_caps = require('blink.cmp').get_lsp_capabilities()
 
+local home = vim.fn.stdpath("data")  -- typically ~/.local/share/nvim
+local path = home .. "/mason/bin/"
+
 vim.lsp.config('*', {
     capabilities = blink_caps,
 })

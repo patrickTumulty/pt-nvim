@@ -1,9 +1,10 @@
 -- local util = require('lspconfig.util')
 -- local async = require('lspconfig.async')
 -- local mod_cache = nil
-
+local home = vim.fn.stdpath("data")     -- typically ~/.local/share/nvim
+local path = home .. "/mason/bin/"
 return {
-    cmd = { 'gopls' },
+    cmd = { path .. 'gopls' },
     root_markers = { 'go.work', 'go.mod', '.git' },
     filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
 

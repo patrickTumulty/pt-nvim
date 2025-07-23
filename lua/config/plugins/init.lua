@@ -58,6 +58,10 @@ return {
         },
     },
     {
+        "mason-org/mason.nvim",
+        opts = {}
+    },
+    {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         opts = {}
