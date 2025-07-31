@@ -10,11 +10,14 @@
 # echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
 # echo '# NVIM' >> ~/.bashrc
 
+cd /opt || exit 1
 git clone https://github.com/neovim/neovim
 cd neovim || exit 1
 make CMAKE_BUILD_TYPE=Release
 sudo make install
 
-yum install -y ripgrep
-yum install -y clangd 
-yum install -y fd-find
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install ripgrep
+
+dnf copr enable tkbcopr/fd
+dnf install fd

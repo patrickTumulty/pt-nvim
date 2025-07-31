@@ -79,6 +79,10 @@ local function show_repos(repos)
             end
         }),
         sorter = config.values.generic_sorter({}),
+        layout_config = {
+            width = 0.4,
+            height = 0.3,
+        },
         attach_mappings = function(_, map)
             map('i', '<CR>', function(prompt_bufnr)
                 local selection = require('telescope.actions.state').get_selected_entry()
