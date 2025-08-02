@@ -54,7 +54,7 @@ local function get_local_repo_paths()
     uv.read_start(stderr, function(err, data)
         if err then
             err(err)
-            vim.api.nvim_err_writeln(err)
+            vim.notify(err, vim.log.levels.ERROR)
         end
     end)
 end

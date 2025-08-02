@@ -1,5 +1,4 @@
 local function onLspAttach(ev)
-
     --
     -- COMMENTED OUT BECAUSE I'M USING blink.cmp
     --
@@ -58,9 +57,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local blink_caps = require('blink.cmp').get_lsp_capabilities()
 
-local home = vim.fn.stdpath("data")  -- typically ~/.local/share/nvim
-local path = home .. "/mason/bin/"
-
 vim.lsp.config('*', {
     capabilities = blink_caps,
 })
@@ -79,11 +75,19 @@ vim.diagnostic.config({
     },
 })
 
-vim.lsp.enable('luals')
-vim.lsp.enable('gopls')
-vim.lsp.enable('tsserver')
-vim.lsp.enable('clangd')
-vim.lsp.enable('jsonls')
-vim.lsp.enable('htmlls')
-vim.lsp.enable('cssls')
-vim.lsp.enable('neocmakelsp')
+local function enableIfInstalled(lsp)
+    local lsp_path = utils.mason_bin_path(lsp)
+    if utils.file_exists(lsp_path) then
+        vim.lsp.enable(lsp)
+    end
+end
+
+enableIfInstalled('lua-language-server')
+enableIfInstalled('gopls')
+enableIfInstalled('tsserver')
+enableIfInstalled('clangd')
+enableIfInstalled('jsonls')
+enableIfInstalled('htmlls')
+enableIfInstalled('cssls')
+enableIfInstalled('neocmakelsp')
+enableIfInstalled('jdtls')

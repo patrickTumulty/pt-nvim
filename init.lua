@@ -1,3 +1,5 @@
+_G.utils = require("utils")
+
 require("config.remap")
 require("config.vim-config")
 require("config.lazy")

@@ -37,6 +37,7 @@ return {
         },
         config = function()
             require('local-highlight').setup()
+            require('snacks').setup()
         end
 
     },

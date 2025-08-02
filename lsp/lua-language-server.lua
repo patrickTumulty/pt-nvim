@@ -5,10 +5,8 @@
 -- Download From Github: https://github.com/LuaLS/lua-language-server/releases
 -- Untar and copy contents into ~/.local/lsp/luals
 
-local home = vim.fn.stdpath("data") -- typically ~/.local/share/nvim
-local path = home .. "/mason/bin/"
 return {
-    cmd = { path .. 'lua-language-server' },
+    cmd = { utils.mason_bin_path('lua-language-server') },
     filetypes = { 'lua' },
     root_markers = { '.luarc.json', '.luarc.jsonc' },
 }

@@ -30,7 +30,10 @@ return {
                     preview_cutoff = 1
                 },
                 file_ignore_patterns = {
-                    ".git"
+                    "%.git/",
+                    "%.cache/",
+                    "build/",
+                    "cmake%-build[^/]*/",
                 }
             }
         })

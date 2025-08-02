@@ -2,10 +2,8 @@
 
 -- sudo snap install typescript-language-server
 
-local home = vim.fn.stdpath("data")     -- typically ~/.local/share/nvim
-local path = home .. "/mason/bin/"
 return {
-    cmd = { path .. 'typescript-language-server', '--stdio' },
+    cmd = { utils.mason_bin_path('typescript-language-server'), '--stdio' },
     filetypes = {
         'javascript',
         'javascriptreact',

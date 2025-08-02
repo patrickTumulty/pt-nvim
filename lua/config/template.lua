@@ -8,17 +8,6 @@ local template_info_list = {
     { ext = "CMakeLists.txt", pattern = "CMakeLists.txt$" },
 }
 
-local function file_exists(filepath)
-    local f = io.open(filepath, "r")
-    if f ~= nil then
-        io.close(f)
-        return true
-    else
-        return false
-    end
-end
-
-
 local config_path = vim.fn.stdpath("config")
 
 local template_group = vim.api.nvim_create_augroup("template", { clear = true })
@@ -107,7 +96,7 @@ end
 
 for _, extension in ipairs(template_info_list) do
     local skeleton_file_path = config_path .. "/templates/template." .. extension.ext .. ".skel"
-    if file_exists(skeleton_file_path) then
+    if utils.file_exists(skeleton_file_path) then
         vim.api.nvim_create_autocmd("BufNewFile", {
             pattern = "*." .. extension.ext,
             group = template_group,
@@ -138,7 +127,7 @@ vim.api.nvim_create_autocmd("User", {
                     goto continue2
                 end
                 local skeleton_file_path = config_path .. "/templates/template." .. template_info.ext .. ".skel"
-                if not file_exists(skeleton_file_path) then
+                if not utils.file_exists(skeleton_file_path) then
                     goto continue2
                 end
                 write_skeleton_file_to_file(skeleton_file_path, path, template_info.ext)
