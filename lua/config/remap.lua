@@ -13,11 +13,7 @@ vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>", opts("(OIL) Go to directory li
 vim.keymap.set("n", "U", vim.cmd.redo, opts("Redo"))
 vim.keymap.set("v", "U", vim.cmd.redo, opts("Redo"))
 
--- Comementing these lines out because the vim-tmux-navigator plugin
--- adds it them automatically
-
 local toggle_modes = { "n", "t" }
-
 
 if utils.program_exists("tmux") then
     vim.keymap.set(toggle_modes, '<C-h>', ':TmuxNavigateLeft<CR>', opts("Move to split pane left"))
