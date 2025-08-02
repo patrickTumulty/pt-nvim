@@ -4,6 +4,16 @@ local function echoerror(msg)
     vim.api.nvim_echo(msg, false, { err = true })
 end
 
+local function get_git_branch(repo_path)
+    local handle = io.popen("cd '" .. repo_path .. "' && git branch --show-current 2>/dev/null")
+    if not handle then
+        return "unknown"
+    end
+    local branch = handle:read("*a")
+    handle:close()
+    return branch:gsub("%s+", "") or "unknown"
+end
+
 local function get_local_repo_paths()
     local uv = vim.uv
     local cwd = vim.fn.getcwd()
@@ -42,9 +52,12 @@ local function get_local_repo_paths()
 
         for repo_path in data:gmatch("[^\r\n]+") do
             local repo_dirname = string.match(repo_path, "/([^/]+)/.git$")
+            local clean_path = string.gsub(repo_path, "%.git$", "")
+            local branch = get_git_branch(clean_path)
             relative_repos[i] = {
                 dirname = repo_dirname,
-                path = string.gsub(repo_path, "%.git$", "")
+                path = clean_path,
+                branch = branch
             }
             i = i + 1
         end
@@ -71,9 +84,10 @@ local function show_repos(repos)
         finder = finders.new_table({
             results = repos,
             entry_maker = function(entry)
+                local current_branch = get_git_branch(entry.path)
                 return {
                     value = entry.path,      -- Action to be performed
-                    display = entry.dirname, -- The text shown in the UI
+                    display = entry.dirname .. " (" .. current_branch .. ")", -- The text shown in the UI
                     ordinal = entry.dirname  -- Sort/Filter by this value
                 }
             end

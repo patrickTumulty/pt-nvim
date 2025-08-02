@@ -11,5 +11,9 @@ function M.file_exists(path)
     return stat ~= nil
 end
 
+function M.program_exists(cmd)
+    return vim.fn.executable(cmd) == 1
+end
+
 return M
 
