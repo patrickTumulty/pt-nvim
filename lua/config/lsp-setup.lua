@@ -38,6 +38,7 @@ local function onLspAttach(ev)
         virtual_text = false,
     })
     nmap("<leader>ld", ':lua vim.diagnostic.open_float()<CR>', "[L]SP [D]iagnostics")
+    nmap("<leader>lD", telescope.diagnostics, "[L]SP [D]iagnostics: Telescope")
 
     -- Lesser used LSP functionality
     nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
@@ -75,13 +76,23 @@ vim.diagnostic.config({
     },
 })
 
-local function enableIfInstalled(lsp)
-    local lsp_path = utils.mason_bin_path(lsp)
-    if utils.file_exists(lsp_path) then
-        vim.lsp.enable(lsp)
+local function enableIfInstalled(lsp, mason)
+    if mason == nil then
+        mason = true
+    end
+    if mason then
+        local lsp_path = utils.mason_bin_path(lsp)
+        if utils.file_exists(lsp_path) then
+            vim.lsp.enable(lsp)
+        end
+    else
+        if vim.fn.executable(lsp) == 1 then
+            vim.lsp.enable(lsp)
+        end
     end
 end
 
+enableIfInstalled('rust-analyzer', false)
 enableIfInstalled('lua-language-server')
 enableIfInstalled('gopls')
 enableIfInstalled('tsserver')
@@ -91,3 +102,4 @@ enableIfInstalled('htmlls')
 enableIfInstalled('cssls')
 enableIfInstalled('neocmakelsp')
 enableIfInstalled('jdtls')
+enableIfInstalled("vscode-json-language-server")
