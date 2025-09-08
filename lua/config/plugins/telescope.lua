@@ -29,6 +29,7 @@ return {
                     vertical = { width = 0.7 },
                     preview_cutoff = 1
                 },
+                path_display = { "smart" },
                 file_ignore_patterns = {
                     "%.git/",
                     "%.cache/",
