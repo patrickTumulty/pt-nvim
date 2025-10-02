@@ -42,17 +42,17 @@ return {
                         vim.keymap.set(mode, l, r, opt)
                     end
 
-                    map('n', 'h]', function()
+                    map('n', '<leader>hn', function()
                         if vim.wo.diff then return 'h]' end
                         vim.schedule(function() gs.next_hunk() end)
                         return '<Ignore>'
-                    end, "[H]unk Next", { expr = true })
+                    end, "[H]unk [N]ext", { expr = true })
 
-                    map('n', 'h[', function()
+                    map('n', '<leader>hp', function()
                         if vim.wo.diff then return 'h[' end
                         vim.schedule(function() gs.prev_hunk() end)
                         return '<Ignore>'
-                    end, "[H]unk Prev", { expr = true })
+                    end, "[H]unk [P]rev", { expr = true })
 
 
                     map('n', '<leader>hp', gs.preview_hunk, '[H]unk [P]review')
