@@ -15,17 +15,10 @@ vim.keymap.set("v", "U", vim.cmd.redo, opts("Redo"))
 
 local toggle_modes = { "n", "t" }
 
-if utils.program_exists("tmux") then
-    vim.keymap.set(toggle_modes, '<C-h>', ':TmuxNavigateLeft<CR>', opts("Move to split pane left"))
-    vim.keymap.set(toggle_modes, '<C-j>', ':TmuxNavigateDown<CR>', opts("Move to split pane down"))
-    vim.keymap.set(toggle_modes, '<C-k>', ':TmuxNavigateUp<CR>', opts("Move to split pane up"))
-    vim.keymap.set(toggle_modes, '<C-l>', ':TmuxNavigateRight<CR>', opts("Move to split pane right"))
-else
-    vim.keymap.set(toggle_modes, "<C-h>", "<C-w>h", opts("Move to split pane left"))
-    vim.keymap.set(toggle_modes, "<C-j>", "<C-w>j", opts("Move to split pane down"))
-    vim.keymap.set(toggle_modes, "<C-k>", "<C-w>k", opts("Move to split pane up"))
-    vim.keymap.set(toggle_modes, "<C-l>", "<C-w>l", opts("Move to split pane right"))
-end
+vim.keymap.set(toggle_modes, "<C-h>", "<C-w>h", opts("Move to split pane left"))
+vim.keymap.set(toggle_modes, "<C-j>", "<C-w>j", opts("Move to split pane down"))
+vim.keymap.set(toggle_modes, "<C-k>", "<C-w>k", opts("Move to split pane up"))
+vim.keymap.set(toggle_modes, "<C-l>", "<C-w>l", opts("Move to split pane right"))
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", opts("Move line down"))
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", opts("Move line up"))
