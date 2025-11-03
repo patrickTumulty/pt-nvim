@@ -43,3 +43,15 @@ vim.keymap.set("n", "Q", "<nop>", opts("Disable Ex mode"))
 
 vim.keymap.set("n", "][", "<C-o>", opts("Jump List: Backward"))
 vim.keymap.set("n", "[]", "<C-i>", opts("Jump List: Forward"))
+
+vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+        ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+    },
+    paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste '+',
+        ['*'] = require('vim.ui.clipboard.osc52').paste '*',
+    },
+}
