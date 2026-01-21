@@ -56,7 +56,7 @@ end
 local function show_repo_picker()
     local repos = get_repos()
 
-    if #repos == 0 then
+    if #repos <= 1 then
         vim.cmd("Neogit")
         return
     end
@@ -74,14 +74,14 @@ local function show_repo_picker()
             entry_maker = function(entry)
                 return {
                     value = entry.path,
-                    display = string.format("%-20s  %s", entry.dirname, entry.branch),
+                    display = string.format("%-50s  %s", entry.dirname, entry.branch),
                     ordinal = entry.dirname,
                 }
             end,
         }),
         sorter = conf.generic_sorter({}),
         layout_config = {
-            width = 0.4,
+            width = 0.5,
             height = 0.3,
         },
         attach_mappings = function(prompt_bufnr, _)
