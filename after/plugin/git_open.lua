@@ -1,120 +1,99 @@
-local relative_repos = {}
-
-local function echoerror(msg)
-    vim.api.nvim_echo(msg, false, { err = true })
-end
-
-local function get_git_branch(repo_path)
-    local handle = io.popen("cd '" .. repo_path .. "' && git branch --show-current 2>/dev/null")
-    if not handle then
-        return "unknown"
-    end
-    local branch = handle:read("*a")
-    handle:close()
-    return branch:gsub("%s+", "") or "unknown"
-end
-
-local function get_local_repo_paths()
-    local uv = vim.uv
+local function get_repos()
+    local repos = {}
     local cwd = vim.fn.getcwd()
 
-    -- Create a pipe for stdout and stderr
-    local stdout = uv.new_pipe(false)
-    local stderr = uv.new_pipe(false)
+    -- 1. Find standard git repos (searching for .git folders)
+    -- Use -maxdepth if you want to limit how deep the search goes
+    local find_cmd = { "find", cwd, "-path", "*/.git/config" }
+    local find_out = vim.system(find_cmd, { text = true }):wait()
 
-    -- Start the background job
-    local handle
-    handle = uv.spawn("find", {
-        args = { cwd, "-name", ".git", "-type", "d" },
-        stdio = { nil, stdout, stderr }
-    }, function(code, signal)
-        if code ~= 0 then
-            local msg = "find command failed with code " .. code .. " and signal " .. signal
-            echoerror(msg)
-        end
-        stdout:read_stop()
-        stderr:read_stop()
-        stdout:close()
-        stderr:close()
-        handle:close()
-    end)
+    if find_out.code == 0 then
+        for line in find_out.stdout:gmatch("[^\r\n]+") do
+            local path = vim.fn.fnamemodify(line, ":p:h:h") -- Get the parent of .git
+            local name = vim.fn.fnamemodify(path, ":t")
 
-    -- Read the stdout and process the paths
-    local i = 1
-    uv.read_start(stdout, function(err, data)
-        if err then
-            echoerror(err)
-            return
-        end
-        if not data then
-            return
-        end
+            -- Get branch efficiently
+            local branch_out = vim.system({ "git", "-C", path, "branch", "--show-current" }, { text = true }):wait()
+            local branch = (branch_out.stdout or "unknown"):gsub("%s+", "")
 
-        for repo_path in data:gmatch("[^\r\n]+") do
-            local repo_dirname = string.match(repo_path, "/([^/]+)/.git$")
-            local clean_path = string.gsub(repo_path, "%.git$", "")
-            local branch = get_git_branch(clean_path)
-            relative_repos[i] = {
-                dirname = repo_dirname,
-                path = clean_path,
-                branch = branch
-            }
-            i = i + 1
+            table.insert(repos, {
+                dirname = name,
+                path = path,
+                branch = branch,
+                submodule = false
+            })
         end
-    end)
+    end
 
-    -- Read the stderr and print any errors
-    uv.read_start(stderr, function(err, data)
-        if err then
-            err(err)
-            vim.notify(err, vim.log.levels.ERROR)
+    -- 2. Find Submodules
+    local sub_cmd = { "git", "submodule", "foreach", "--quiet", [[echo "$displaypath|$(pwd)"]] }
+    local sub_out = vim.system(sub_cmd, { text = true }):wait()
+
+    if sub_out.code == 0 then
+        for line in sub_out.stdout:gmatch("[^\r\n]+") do
+            local rel, abs = line:match("([^|]+)|([^|]+)")
+            if rel and abs then
+                -- Get branch/tag for submodule
+                local branch_out = vim.system({ "git", "-C", abs, "rev-parse", "--abbrev-ref", "HEAD" }, { text = true })
+                    :wait()
+                local branch = (branch_out.stdout or "head"):gsub("%s+", "")
+                local tag_out = vim.system({ "git", "-C", abs, "describe", "--tag", "--always" }, { text = true }):wait()
+                local tag = (tag_out.stdout or ""):gsub("%s+", "")
+
+                table.insert(repos, {
+                    dirname = "[Sub] " .. rel,
+                    path = abs,
+                    branch = branch .. " | " .. tag,
+                    submodule = true
+                })
+            end
         end
-    end)
+    end
+
+    return repos
 end
 
-get_local_repo_paths()
+local function show_repo_picker()
+    local repos = get_repos()
 
-local function show_repos(repos)
-    local actions = require('telescope.actions')
+    if #repos == 0 then
+        vim.cmd("Neogit")
+        return
+    end
+
+    local pickers = require('telescope.pickers')
     local finders = require('telescope.finders')
-    local config = require('telescope.config')
+    local actions = require('telescope.actions')
+    local action_state = require('telescope.actions.state')
+    local conf = require('telescope.config').values
 
-    local opts = {
-        prompt_title = "Choose an Option",
+    pickers.new({}, {
+        prompt_title = "Select Repository",
         finder = finders.new_table({
             results = repos,
             entry_maker = function(entry)
-                local current_branch = get_git_branch(entry.path)
                 return {
-                    value = entry.path,      -- Action to be performed
-                    display = entry.dirname .. " (" .. current_branch .. ")", -- The text shown in the UI
-                    ordinal = entry.dirname  -- Sort/Filter by this value
+                    value = entry.path,
+                    display = string.format("%-20s  %s", entry.dirname, entry.branch),
+                    ordinal = entry.dirname,
                 }
-            end
+            end,
         }),
-        sorter = config.values.generic_sorter({}),
+        sorter = conf.generic_sorter({}),
         layout_config = {
             width = 0.4,
             height = 0.3,
         },
-        attach_mappings = function(_, map)
-            map('i', '<CR>', function(prompt_bufnr)
-                local selection = require('telescope.actions.state').get_selected_entry()
+        attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
                 actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
                 vim.cmd("Neogit cwd=" .. selection.value)
             end)
             return true
-        end
-    }
-
-    require('telescope.pickers').new({}, opts):find()
+        end,
+    }):find()
 end
 
-vim.keymap.set("n", "<leader>gg", function()
-    local length = #relative_repos
-    if length <= 1 then
-        vim.cmd("Neogit")
-    else
-        show_repos(relative_repos)
-    end
-end, { desc = "Neogit: [G]it" })
+vim.keymap.set("n", "<leader>gg", show_repo_picker, { desc = "Neogit: Select Repo" })
+
