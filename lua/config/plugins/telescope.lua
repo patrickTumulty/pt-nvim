@@ -1,12 +1,14 @@
 return {
     'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    },
     config = function()
         local builtin = require('telescope.builtin')
 
-        -- Enable telescope fzf native, if installed
-        pcall(require('telescope').load_extension, 'fzf')
+        require('telescope').load_extension('fzf')
+
         vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Telescope: [?] Find recently opened files' })
         vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = 'Telescope: [ ] Find existing buffers' })
         vim.keymap.set('n', '<leader>/', function()
@@ -30,12 +32,6 @@ return {
                     preview_cutoff = 1
                 },
                 path_display = { "smart" },
-                file_ignore_patterns = {
-                    "%.git/",
-                    "%.cache/",
-                    "build/",
-                    "cmake%-build[^/]*/",
-                }
             }
         })
 
@@ -48,5 +44,7 @@ return {
         vim.keymap.set('n', '<leader>bh', builtin.git_bcommits, { desc = 'Telescope: [B]uffer Git [H]istory' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
+
+        require "config.telescope.multigrep".setup()
     end,
 }
