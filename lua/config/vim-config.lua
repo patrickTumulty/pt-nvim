@@ -28,7 +28,9 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
-vim.opt.termguicolors = true
+if vim.fn.has("termguicolors") == 1 then
+    vim.opt.termguicolors = true
+end
 
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
@@ -45,3 +47,13 @@ vim.wo.signcolumn = 'yes'
 vim.o.completeopt = 'menuone,noselect'
 
 vim.g.netrw_sort_sequence = "[\\/]$,*"
+
+-- Enable spellcheck
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
+vim.opt.spellsuggest = 'best,9'
+
+vim.opt.lazyredraw = true
+
+vim.opt.cursorline = false
+vim.opt.cursorcolumn = false

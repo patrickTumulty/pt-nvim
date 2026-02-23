@@ -11,13 +11,13 @@ return {
 
         vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Telescope: [?] Find recently opened files' })
         vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = 'Telescope: [ ] Find existing buffers' })
-        vim.keymap.set('n', '<leader>/', function()
+        vim.keymap.set('n', '<leader>fc', function()
             -- You can pass additional configuration to telescope to change theme, layout, etc.
             require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
                 winblend = 10,
                 previewer = false,
             })
-        end, { desc = 'Telescope: [/] Fuzzily search in current buffer' })
+        end, { desc = 'Telescope: [F]uzzily search in [c]urrent buffer' })
 
         require("telescope").setup({
             pickers = {
