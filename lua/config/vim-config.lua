@@ -53,7 +53,13 @@ vim.opt.spell = true
 vim.opt.spelllang = { 'en_us' }
 vim.opt.spellsuggest = 'best,9'
 
-vim.opt.lazyredraw = true
-
 vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
+
+vim.o.statusline =
+    "(%{get(b:,'gitsigns_head','')})" ..
+    " %f" ..
+    " %m%r" ..
+    "%=" ..
+    " %p%%" ..
+    " %l:%c "

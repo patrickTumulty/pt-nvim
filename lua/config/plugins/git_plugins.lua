@@ -14,8 +14,36 @@ return {
             -- vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit: [G]it" })
             vim.keymap.set("n", "<leader>do", "<cmd>DiffviewOpen<cr>", { desc = "Diffview: [D]iffview [O]pen" })
             vim.keymap.set("n", "<leader>dc", "<cmd>DiffviewClose<cr>", { desc = "Diffview: [D]iffview [C]lose" })
-            vim.keymap.set("n", "<leader>df", "<cmd>DiffviewFileHistory %<cr>",
-                { desc = "Diffview: [D]iffview Current [F]ile History" })
+            vim.keymap.set("n", "<leader>dh", "<cmd>DiffviewFileHistory %<cr>",
+                { desc = "Diffview: [D]iffview Current File [H]istory" })
+
+            local function diff_current_file_with_branch()
+                local builtin = require('telescope.builtin')
+                local actions = require('telescope.actions')
+                local action_state = require('telescope.actions.state')
+
+                builtin.git_branches({
+                    attach_mappings = function(prompt_bufnr, _)
+                        -- Override the select action (usually <CR>)
+                        actions.select_default:replace(function()
+                            -- Close the picker
+                            actions.close(prompt_bufnr)
+
+                            -- Get the selected branch name
+                            local selection = action_state.get_selected_entry()
+                            local branch = selection.value
+
+                            -- Execute the Diffview command
+                            -- Result: :DiffviewOpen <branch> -- %
+                            vim.cmd("DiffviewOpen " .. branch .. " -- %")
+                        end)
+                        return true
+                    end,
+                })
+            end
+
+            -- Example Keymap
+            vim.keymap.set('n', '<leader>df', diff_current_file_with_branch, { desc = 'Diffview: [D]iffview Compare [F]ile with Branch' })
         end
     },
     {

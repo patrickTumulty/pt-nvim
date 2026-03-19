@@ -23,7 +23,11 @@ return {
             pickers = {
                 find_files = {
                     hidden = true
-                }
+                },
+                lsp_document_symbols = {
+                    symbol_width = 50, -- Increase this number (default is usually 25)
+                    show_line = true, -- Optional: shows the line number
+                },
             },
             defaults = {
                 layout_strategy = "vertical",

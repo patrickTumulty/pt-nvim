@@ -1,6 +1,7 @@
 _G.utils = require("utils")
 
 require("config.remap")
+require("config.itar")
 require("config.vim-config")
 require("config.lazy")
 require("config.lsp-setup")
