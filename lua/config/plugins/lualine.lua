@@ -1,52 +1,52 @@
 return {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    opts = {
-        options = {
-            icons_enabled = true,
-            theme = 'auto',
-            component_separators = '|',
-            section_separators = '',
-            refresh = {
-                statusline = 1000,
-                tabline = 1000,
-                winbar = 1000,
-                refresh_time = 33, -- ~60fps
-            }
-        },
-        sections = {
-            lualine_c = {
-                {
-                    'filename',
-                    path = 1,             -- relative path
-                    shorting_target = 40, -- shorten if too long
-                    symbols = {
-                        modified = '[+]',
-                        readonly = '[-]',
-                        unnamed = '[No Name]',
-                    },
-                }
-            }
-        },
-        inactive_sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = {
-                {
-                    'filename',
-                    path = 1,             -- relative path
-                    shorting_target = 40, -- shorten if too long
-                    symbols = {
-                        modified = '[+]',
-                        readonly = '[-]',
-                        unnamed = '[No Name]',
-                    },
-                }
-            },
-            lualine_x = {},
-            lualine_y = {},
-            lualine_z = {},
-        },
-    },
+    -- -- Set lualine as statusline
+    -- 'nvim-lualine/lualine.nvim',
+    -- opts = {
+    --     options = {
+    --         icons_enabled = true,
+    --         theme = 'auto',
+    --         component_separators = '|',
+    --         section_separators = '',
+    --         refresh = {
+    --             statusline = 1000,
+    --             tabline = 1000,
+    --             winbar = 1000,
+    --             refresh_time = 33, -- ~60fps
+    --         }
+    --     },
+    --     sections = {
+    --         lualine_c = {
+    --             {
+    --                 'filename',
+    --                 path = 1,             -- relative path
+    --                 shorting_target = 40, -- shorten if too long
+    --                 symbols = {
+    --                     modified = '[+]',
+    --                     readonly = '[-]',
+    --                     unnamed = '[No Name]',
+    --                 },
+    --             }
+    --         }
+    --     },
+    --     inactive_sections = {
+    --         lualine_a = {},
+    --         lualine_b = {},
+    --         lualine_c = {
+    --             {
+    --                 'filename',
+    --                 path = 1,             -- relative path
+    --                 shorting_target = 40, -- shorten if too long
+    --                 symbols = {
+    --                     modified = '[+]',
+    --                     readonly = '[-]',
+    --                     unnamed = '[No Name]',
+    --                 },
+    --             }
+    --         },
+    --         lualine_x = {},
+    --         lualine_y = {},
+    --         lualine_z = {},
+    --     },
+    -- },
 
 }
