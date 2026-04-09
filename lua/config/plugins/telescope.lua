@@ -43,10 +43,9 @@ return {
         vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope: [F]ind [F]iles' })
         vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope: [F]ind [H]elp' })
         vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Telescope: [F]ind current [W]ord' })
-        vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope: [F]ind by [G]rep' })
+        -- vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope: [F]ind by [G]rep' }) -- See multigrep.lua
         vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = 'Telescope: [F]ind [D]iagnostics' })
         vim.keymap.set('n', '<leader>bh', builtin.git_bcommits, { desc = 'Telescope: [B]uffer Git [H]istory' })
-        vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
         vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
 
         require "config.telescope.multigrep".setup()

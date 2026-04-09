@@ -36,7 +36,7 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
-vim.opt.updatetime = 50
+vim.opt.updatetime = 250
 vim.o.timeout = true
 vim.o.timeoutlen = 300
 
@@ -58,10 +58,10 @@ vim.opt.spellsuggest = 'best,9'
 vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
 
-vim.o.statusline =
-    "(%{get(b:,'gitsigns_head','')})" ..
-    " %f" ..
-    " %m%r" ..
-    "%=" ..
-    " %p%%" ..
-    " %l:%c "
+-- vim.o.statusline =
+--     "(%{get(b:,'gitsigns_head','')})" ..
+--     " %f" ..
+--     " %m%r" ..
+--     "%=" ..
+--     " %p%%" ..
+--     " %l:%c "
