@@ -48,6 +48,8 @@ vim.o.completeopt = 'menuone,noselect'
 
 vim.g.netrw_sort_sequence = "[\\/]$,*"
 
+vim.g.no_python_maps = 1  -- must be set before ftplugin loads
+
 -- Enable spellcheck
 vim.opt.spell = true
 vim.opt.spelllang = { 'en_us' }

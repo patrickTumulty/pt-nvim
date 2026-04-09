@@ -77,12 +77,18 @@ vim.diagnostic.config({
     },
 })
 
-local function enableIfInstalled(lsp, mason)
+local function enableIfInstalled(lsp, mason, alt_path)
     if mason == nil then
         mason = true
     end
     if mason then
+        if alt_path ~= nil and utils.file_exists(alt_path) then
+            vim.lsp.enable(lsp)
+            return;
+        end
+
         local lsp_path = utils.mason_bin_path(lsp)
+
         if utils.file_exists(lsp_path) then
             vim.lsp.enable(lsp)
         end
@@ -103,4 +109,4 @@ enableIfInstalled('vscode-css-language-server')
 enableIfInstalled("vscode-json-language-server")
 enableIfInstalled('neocmakelsp')
 enableIfInstalled('jdtls')
-enableIfInstalled('pylsp')
+enableIfInstalled('pylsp', true, vim.fn.getcwd() .. "/venv/bin/pylsp")

@@ -1,6 +1,6 @@
 return {
     cmd = { utils.mason_bin_path('vscode-html-language-server'), '--stdio' },
-    filetypes = { 'html', 'templ' },
+    filetypes = { 'html' },
     root_markers = { 'package.json', '.git' },
     single_file_support = true,
     settings = {},

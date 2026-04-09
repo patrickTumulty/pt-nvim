@@ -1,12 +1,15 @@
 local M = {}
 
 function M.mason_bin_path(lsp)
-    local home = vim.fn.stdpath("data")     -- typically ~/.local/share/nvim
+    local home = vim.fn.stdpath("data") -- typically ~/.local/share/nvim
     local path = home .. "/mason/bin/"
     return path .. lsp
 end
 
 function M.file_exists(path)
+    if path == nil then
+        return false
+    end
     local stat = vim.loop.fs_stat(path)
     return stat ~= nil
 end
@@ -16,4 +19,3 @@ function M.program_exists(cmd)
 end
 
 return M
-
