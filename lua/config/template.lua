@@ -3,7 +3,9 @@ local template_info_list = {
     { ext = "html",           pattern = "%.html$" },
     { ext = "hpp",            pattern = "%.hpp$" },
     { ext = "h",              pattern = "%.h$" },
+    { ext = "main.cpp",       pattern = "main.cpp$" },
     { ext = "cpp",            pattern = "%.cpp$" },
+    { ext = "main.c",         pattern = "main.c$" },
     { ext = "c",              pattern = "%.c$" },
     { ext = "CMakeLists.txt", pattern = "CMakeLists.txt$" },
 }

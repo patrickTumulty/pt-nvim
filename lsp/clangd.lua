@@ -8,8 +8,7 @@ local drivers = {
     home .. "/.espressif/tools/**/bin/*gcc",
     "/usr/bin/*gcc",
     "/usr/bin/*g++",
-    "/opt/nos/sysroots/**/bin/*gcc",
-    "/opt/nos/sysroots/**/bin/*g++",
+    "/opt/nos/sysroots/x86_64-tdsdk-linux/usr/bin/aarch64-oe4t-linux/aarch64-oe4t-linux-g*"
 }
 
 return {
