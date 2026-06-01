@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.loader.enable()
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- Enable break indent
 vim.o.breakindent = true
