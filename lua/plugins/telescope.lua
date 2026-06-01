@@ -1,22 +1,34 @@
 vim.api.nvim_create_autocmd('PackChanged', {
     callback = function(ev)
-        local name, kind = ev.data.spec.name, ev.data.kind
-        if name == 'nvim-telescope' and kind == 'update' then
-            if not ev.data.active then vim.cmd.packadd('nvim-telescope') end
-            vim.cmd('make')
+        local name = ev.data.spec.name
+        local kind = ev.data.kind
+
+        if kind ~= 'install' and kind ~= 'update' then
+            return
+        end
+
+        if name == 'telescope-fzf-native.nvim' and vim.fn.executable 'make' == 1 then
+            utils.run_build(name, { 'make' }, ev.data.path)
+            return
         end
     end
 })
 
-vim.pack.add({
-    'https://github.com/nvim-telescope/telescope.nvim',
-    'https://github.com/nvim-lua/plenary.nvim',
-    'https://github.com/nvim-telescope/telescope-fzf-native.nvim', -- dep
-})
+local telescope_plugins = {
+    utils.gh 'nvim-lua/plenary.nvim',
+    utils.gh 'nvim-telescope/telescope.nvim',
+    utils.gh 'nvim-telescope/telescope-ui-select.nvim',
+}
+if vim.fn.executable 'make' == 1 then
+    table.insert(telescope_plugins, utils.gh 'nvim-telescope/telescope-fzf-native.nvim')
+end
+
+vim.pack.add(telescope_plugins)
 
 local builtin = require('telescope.builtin')
 
-require('telescope').load_extension('fzf')
+pcall(require('telescope').load_extension, 'fzf')
+pcall(require('telescope').load_extension, 'ui-select')
 
 vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = 'Telescope: [?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', builtin.buffers, { desc = 'Telescope: [ ] Find existing buffers' })
@@ -38,6 +50,9 @@ require("telescope").setup({
             show_line = true,  -- Optional: shows the line number
         },
     },
+    extensions = {
+        ['ui-select'] = { require('telescope.themes').get_dropdown() },
+    },
     defaults = {
         layout_strategy = "vertical",
         layout_config = {
@@ -57,4 +72,4 @@ vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = 'Telescope: [F]i
 vim.keymap.set('n', '<leader>bh', builtin.git_bcommits, { desc = 'Telescope: [B]uffer Git [H]istory' })
 vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = 'Telescope: [G]it [S]tatus' })
 
-require "config.telescope.multigrep".setup()
+require("config.multigrep").setup()
