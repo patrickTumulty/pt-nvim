@@ -26,6 +26,17 @@ vim.o.inccommand = 'split'
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Sets how neovim will display certain whitespace characters in the editor.
+--  See `:help 'list'`
+--  and `:help 'listchars'`
+--
+--  Notice listchars is set using `vim.opt` instead of `vim.o`.
+--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
+--   See `:help lua-options`
+--   and `:help lua-guide-options`
+vim.o.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -65,7 +76,7 @@ vim.o.completeopt = 'menuone,noselect'
 
 vim.g.netrw_sort_sequence = "[\\/]$,*"
 
-vim.g.no_python_maps = 1  -- must be set before ftplugin loads
+vim.g.no_python_maps = 1 -- must be set before ftplugin loads
 
 -- Enable spellcheck
 vim.opt.spell = true
@@ -74,11 +85,3 @@ vim.opt.spellsuggest = 'best,9'
 
 vim.opt.cursorline = false
 vim.opt.cursorcolumn = false
-
--- vim.o.statusline =
---     "(%{get(b:,'gitsigns_head','')})" ..
---     " %f" ..
---     " %m%r" ..
---     "%=" ..
---     " %p%%" ..
---     " %l:%c "

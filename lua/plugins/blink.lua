@@ -1,31 +1,22 @@
--- vim.api.nvim_create_autocmd('PackChanged', {
---     callback = function(ev)
---         local name, kind = ev.data.spec.name, ev.data.kind
---         if name == 'blink.cmp' and kind == 'update' then
---             if not ev.data.active then vim.cmd.packadd('blink.cmp') end
---             -- vim.cmd('cargo build --release')
---             require('blink.cmp').build():pwait()
---         end
---     end
--- })
+vim.pack.add { { src = utils.gh 'L3MON4D3/LuaSnip', version = vim.version.range '2.*' } }
+require('luasnip').setup {}
 
 vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(ev)
-    if ev.data.spec.name == 'blink.cmp' then
-      local res = vim.system({ 'cargo', 'build', '--release' }, { cwd = ev.data.path })
-      if vim.v.shell_error ~= 0 then
-        vim.notify('Failed to compile blink.cmp: ' .. res, vim.log.levels.ERROR)
-      else
-        vim.notify('Successfully compiled blink.cmp', vim.log.levels.INFO)
-      end
-    end
-  end,
+    callback = function(ev)
+        if ev.data.spec.name == 'blink.cmp' then
+            local res = vim.system({ 'cargo', 'build', '--release' }, { cwd = ev.data.path })
+            if vim.v.shell_error ~= 0 then
+                vim.notify('Failed to compile blink.cmp: ' .. res, vim.log.levels.ERROR)
+            else
+                vim.notify('Successfully compiled blink.cmp', vim.log.levels.INFO)
+            end
+        end
+    end,
 })
 
-vim.pack.add({ 
-
-    { src = "https://github.com/saghen/blink.cmp", version = vim.version.range('1.*') 
-} })
+vim.pack.add({
+    { src = "https://github.com/saghen/blink.cmp", version = vim.version.range('1.*') }
+})
 
 require("blink.cmp").setup({
     keymap = {
@@ -46,5 +37,9 @@ require("blink.cmp").setup({
                 auto_insert = true
             },
         },
-    }
+    },
+    sources = {
+        default = { 'lsp', 'path', 'snippets' },
+    },
+    fuzzy = { implementation = 'lua' },
 })

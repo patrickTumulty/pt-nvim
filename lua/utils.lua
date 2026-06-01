@@ -18,7 +18,6 @@ function M.program_exists(cmd)
     return vim.fn.executable(cmd) == 1
 end
 
-
 function M.run_build(name, cmd, cwd)
     local result = vim.system(cmd, { cwd = cwd }):wait()
     if result.code ~= 0 then
