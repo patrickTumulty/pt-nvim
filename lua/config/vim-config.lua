@@ -53,7 +53,12 @@ vim.opt.wrap = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+-- Cross-platform undodir
+local undodir = vim.fn.stdpath("state") .. "/undo"
+if vim.fn.isdirectory(undodir) == 0 then
+    vim.fn.mkdir(undodir, "p")
+end
+vim.opt.undodir = undodir
 vim.opt.undofile = true
 
 if vim.fn.has("termguicolors") == 1 then
@@ -74,7 +79,8 @@ vim.wo.signcolumn = 'yes'
 
 vim.o.completeopt = 'menuone,noselect'
 
-vim.g.netrw_sort_sequence = "[\\/]$,*"
+-- Cross-platform netrw sort sequence
+vim.g.netrw_sort_sequence = "[/\\\\]$,*"
 
 vim.g.no_python_maps = 1 -- must be set before ftplugin loads
 

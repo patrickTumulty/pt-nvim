@@ -1,4 +1,8 @@
 local function is_xdotool_installed()
+    -- xdotool is Linux-specific, disable on Windows
+    if utils.is_windows() then
+        return false
+    end
     local handle = io.popen("command -v xdotool")
     if handle == nil then
         return false
@@ -22,8 +26,7 @@ local function refresh_page(title)
     vim.api.nvim_command(command)
 end
 
-
-if is_xdotool_installed() then
+if not is_xdotool_installed() then
     return
 end
 

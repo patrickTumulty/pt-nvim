@@ -2,15 +2,23 @@
 -- Then moved directory to .local/lsp and renamed to clangd
 
 
-local home = os.getenv("HOME")
+local home = utils.is_windows() and os.getenv("USERPROFILE") or os.getenv("HOME")
 
-local drivers = {
-    home .. "/.espressif/tools/**/bin/*gcc",
-    "/usr/bin/*gcc",
-    "/usr/bin/*g++",
-    "/opt/nos/sysroots/**/bin/*gcc",
-    "/opt/nos/sysroots/**/bin/*g++",
-}
+local drivers = {}
+if utils.is_windows() then
+    -- Windows-specific compiler paths
+    table.insert(drivers, "C:/msys64/mingw64/bin/*gcc.exe")
+    table.insert(drivers, "C:/msys64/mingw64/bin/*g++.exe")
+    table.insert(drivers, "C:/mingw64/bin/*gcc.exe")
+    table.insert(drivers, "C:/mingw64/bin/*g++.exe")
+else
+    -- Unix-specific paths
+    table.insert(drivers, home .. "/.espressif/tools/**/bin/*gcc")
+    table.insert(drivers, "/usr/bin/*gcc")
+    table.insert(drivers, "/usr/bin/*g++")
+    table.insert(drivers, "/opt/nos/sysroots/**/bin/*gcc")
+    table.insert(drivers, "/opt/nos/sysroots/**/bin/*g++")
+end
 
 return {
     cmd = {

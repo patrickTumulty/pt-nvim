@@ -1,4 +1,4 @@
--- local local_pylsp = 
+-- local local_pylsp =
 -- local mason_pylsp = utils.mason_bin_path("pylsp")
 --
 -- local lsp_path = mason_pylsp
@@ -8,7 +8,9 @@
 -- end
 
 return {
-    cmd = { vim.fn.getcwd() .. "/venv/bin/pylsp" },
+    cmd = utils.is_windows() and
+        { vim.fn.getcwd() .. "\\venv\\Scripts\\pylsp.exe" } or
+        { vim.fn.getcwd() .. "/venv/bin/pylsp" },
     filetypes = { 'python' },
     root_markers = {
         'pyproject.toml',

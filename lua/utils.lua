@@ -1,8 +1,20 @@
 local M = {}
 
+M.sep = package.config:sub(1, 1) -- gets the OS path separator
+
+function M.is_windows()
+    return vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+end
+
 function M.mason_bin_path(lsp)
-    local home = vim.fn.stdpath("data") -- typically ~/.local/share/nvim
-    local path = home .. "/mason/bin/"
+    local home = vim.fn.stdpath("data")
+    local path = home .. M.sep .. "mason" .. M.sep .. "bin" .. M.sep
+
+    -- On Windows, Mason installs .cmd files
+    if M.is_windows() then
+        return path .. lsp .. ".cmd"
+    end
+
     return path .. lsp
 end
 

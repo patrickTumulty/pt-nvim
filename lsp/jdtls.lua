@@ -7,19 +7,23 @@ local env = {
 }
 
 local function get_cache_dir()
-    return env.XDG_CACHE_HOME and env.XDG_CACHE_HOME or env.HOME .. '/.cache'
+    if utils.is_windows() then
+        return env.LOCALAPPDATA or (env.HOME .. '\\AppData\\Local')
+    else
+        return env.XDG_CACHE_HOME and env.XDG_CACHE_HOME or env.HOME .. '/.cache'
+    end
 end
 
 local function get_jdtls_cache_dir()
-    return get_cache_dir() .. '/jdtls'
+    return get_cache_dir() .. utils.sep .. 'jdtls'
 end
 
 local function get_jdtls_config_dir()
-    return get_jdtls_cache_dir() .. '/config'
+    return get_jdtls_cache_dir() .. utils.sep .. 'config'
 end
 
 local function get_jdtls_workspace_dir()
-    return get_jdtls_cache_dir() .. '/workspace'
+    return get_jdtls_cache_dir() .. utils.sep .. 'workspace'
 end
 
 local function get_jdtls_jvm_args()
@@ -79,7 +83,8 @@ return {
 
     cmd = {
         utils.mason_bin_path('jdtls'),
-        '--java-executable', '/Users/ptumulty/Developer/JRE/zulu21.44.17-ca-fx-jre21.0.8-macosx_x64/bin/java',
+        -- Comment out hardcoded java path - let jdtls find it from JAVA_HOME or PATH
+        -- '--java-executable', '/Users/ptumulty/Developer/JRE/zulu21.44.17-ca-fx-jre21.0.8-macosx_x64/bin/java',
         '-configuration',
         get_jdtls_config_dir(),
         '-data',

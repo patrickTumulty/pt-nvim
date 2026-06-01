@@ -95,7 +95,8 @@ local function write_skeleton_file_to_file(template_path, filepath, extension)
 end
 
 for _, extension in ipairs(template_info_list) do
-    local skeleton_file_path = config_path .. "/templates/template." .. extension.ext .. ".skel"
+    local skeleton_file_path = config_path ..
+        utils.sep .. "templates" .. utils.sep .. "template." .. extension.ext .. ".skel"
     if utils.file_exists(skeleton_file_path) then
         vim.api.nvim_create_autocmd("BufNewFile", {
             pattern = "*." .. extension.ext,
@@ -119,14 +120,21 @@ vim.api.nvim_create_autocmd("User", {
                 goto continue
             end
             local path = action.url
-            path = path:gsub("oil:///", "/")
+            -- Handle oil:// protocol cross-platform
+            if utils.is_windows() then
+                path = path:gsub("oil://", "")
+                path = path:gsub("/", "\\")
+            else
+                path = path:gsub("oil:///", "/")
+            end
             local filename = path:match("([^/\\]+)$")
 
             for _, template_info in ipairs(template_info_list) do
                 if not filename:match(template_info.pattern) then
                     goto continue2
                 end
-                local skeleton_file_path = config_path .. "/templates/template." .. template_info.ext .. ".skel"
+                local skeleton_file_path = config_path ..
+                    utils.sep .. "templates" .. utils.sep .. "template." .. template_info.ext .. ".skel"
                 if not utils.file_exists(skeleton_file_path) then
                     goto continue2
                 end
