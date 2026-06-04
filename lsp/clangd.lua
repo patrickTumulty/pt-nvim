@@ -16,8 +16,8 @@ else
     table.insert(drivers, home .. "/.espressif/tools/**/bin/*gcc")
     table.insert(drivers, "/usr/bin/*gcc")
     table.insert(drivers, "/usr/bin/*g++")
-    table.insert(drivers, "/opt/nos/sysroots/**/bin/*gcc")
-    table.insert(drivers, "/opt/nos/sysroots/**/bin/*g++")
+    table.insert(drivers, "/opt/nos/sysroots/x86_64-tdsdk-linux/usr/bin/aarch64-oe4t-linux/aarch64-oe4t-linux-g*")
+
 end
 
 return {
