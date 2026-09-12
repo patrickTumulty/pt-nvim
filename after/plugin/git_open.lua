@@ -3,13 +3,25 @@ local function get_repos()
     local cwd = vim.fn.getcwd()
 
     -- 1. Find standard git repos (searching for .git folders)
-    -- Use -maxdepth if you want to limit how deep the search goes
-    local find_cmd = { "find", cwd, "-path", "*/.git/config" }
+    -- Use cross-platform approach
+    local find_cmd
+    if utils.is_windows() then
+        -- On Windows, use PowerShell or dir command
+        find_cmd = { "powershell", "-Command", "Get-ChildItem", "-Path", cwd, "-Filter", ".git", "-Directory", "-Recurse", "-Hidden" }
+    else
+        find_cmd = { "find", cwd, "-path", "*/.git/config" }
+    end
     local find_out = vim.system(find_cmd, { text = true }):wait()
 
     if find_out.code == 0 then
         for line in find_out.stdout:gmatch("[^\r\n]+") do
-            local path = vim.fn.fnamemodify(line, ":p:h:h") -- Get the parent of .git
+            local path
+            if utils.is_windows() then
+                -- PowerShell returns full path to .git directory
+                path = vim.fn.fnamemodify(line:match("^%s*(.-)%s*$"), ":h") -- Trim whitespace and get parent
+            else
+                path = vim.fn.fnamemodify(line, ":p:h:h") -- Get the parent of .git
+            end
             local name = vim.fn.fnamemodify(path, ":t")
 
             -- Get branch efficiently
@@ -26,7 +38,13 @@ local function get_repos()
     end
 
     -- 2. Find Submodules
-    local sub_cmd = { "git", "submodule", "foreach", "--quiet", [[echo "$displaypath|$(pwd)"]] }
+    local sub_cmd
+    if utils.is_windows() then
+        -- Windows command
+        sub_cmd = { "git", "submodule", "foreach", "--quiet", "echo %displaypath%^|%cd%" }
+    else
+        sub_cmd = { "git", "submodule", "foreach", "--quiet", [[echo "$displaypath|$(pwd)"]] }
+    end
     local sub_out = vim.system(sub_cmd, { text = true }):wait()
 
     if sub_out.code == 0 then

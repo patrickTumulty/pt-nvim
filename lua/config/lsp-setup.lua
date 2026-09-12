@@ -109,4 +109,12 @@ enableIfInstalled('vscode-css-language-server')
 enableIfInstalled("vscode-json-language-server")
 enableIfInstalled('neocmakelsp')
 enableIfInstalled('jdtls')
-enableIfInstalled('pylsp', true, vim.fn.getcwd() .. "/venv/bin/pylsp")
+
+-- Cross-platform virtual environment path
+local venv_path
+if utils.is_windows() then
+    venv_path = vim.fn.getcwd() .. "\\venv\\Scripts\\pylsp.exe"
+else
+    venv_path = vim.fn.getcwd() .. "/venv/bin/pylsp"
+end
+enableIfInstalled('pylsp', true, venv_path)

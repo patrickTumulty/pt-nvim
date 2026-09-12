@@ -1,5 +1,6 @@
 local notify = require("notify")
-local is_ssh = os.getenv("SSH_CLIENT") ~= nil or os.getenv("SSH_TTY") ~= nil
+-- Check for SSH connection (works on both Unix and Windows)
+local is_ssh = os.getenv("SSH_CLIENT") ~= nil or os.getenv("SSH_TTY") ~= nil or os.getenv("SSH_CONNECTION") ~= nil
 
 if is_ssh then
     notify.setup({ stages = "static" })
