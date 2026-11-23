@@ -1,16 +1,9 @@
--- local local_pylsp =
--- local mason_pylsp = utils.mason_bin_path("pylsp")
---
--- local lsp_path = mason_pylsp
---
--- if utils.file_exists(local_pylsp) then
---     lsp_path = local_pylsp
--- end
+-- Prefer the project's venv pylsp so its plugins (mypy, ruff, rope) see the project's deps
+local venv_pylsp = utils.venv_pylsp_path()
+local pylsp_cmd = utils.file_exists(venv_pylsp) and venv_pylsp or utils.mason_bin_path("pylsp")
 
 return {
-    cmd = utils.is_windows() and
-        { vim.fn.getcwd() .. "\\venv\\Scripts\\pylsp.exe" } or
-        { vim.fn.getcwd() .. "/venv/bin/pylsp" },
+    cmd = { pylsp_cmd },
     filetypes = { 'python' },
     root_markers = {
         'pyproject.toml',

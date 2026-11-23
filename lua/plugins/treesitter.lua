@@ -11,41 +11,27 @@ vim.api.nvim_create_autocmd('PackChanged', {
 
 vim.pack.add({
     "https://github.com/nvim-treesitter/nvim-treesitter",
-    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", -- dep
     "https://github.com/nvim-treesitter/nvim-treesitter-context"
 })
 
-local treesitter = require("nvim-treesitter")
-
-treesitter.setup({
-    ensure_installed = {
-        "c",
-        "lua",
-        "java",
-        "rust",
-        "python",
-        "cmake",
-        "cpp",
-        "bash",
-        "json",
-        "kotlin",
-        "markdown",
-        "typescript",
-        "tsx",
-        "javascript",
-        "html",
-        "css"
-    },
-    auto_install = true,
-    highlight = {
-        enable = true
-    },
-    indent = {
-        enable = true
-    },
-    autotag = {
-        enabled = true
-    }
+-- Already-installed parsers are skipped, so this is cheap on every startup
+require("nvim-treesitter").install({
+    "c",
+    "lua",
+    "java",
+    "rust",
+    "python",
+    "cmake",
+    "cpp",
+    "bash",
+    "json",
+    "kotlin",
+    "markdown",
+    "typescript",
+    "tsx",
+    "javascript",
+    "html",
+    "css"
 })
 
 local function treesitter_try_attach(buf, language)
@@ -64,7 +50,7 @@ local function treesitter_try_attach(buf, language)
     local has_indent_query = vim.treesitter.query.get(language, 'indents') ~= nil
 
     -- Enable treesitter based indentation
-    if has_indent_query then vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" end
+    if has_indent_query then vim.bo[buf].indentexpr ="v:lua.require'nvim-treesitter'.indentexpr()" end
 end
 
 local available_parsers = require('nvim-treesitter').get_available()

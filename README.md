@@ -183,7 +183,6 @@ Telescope handles the preview.
 |-- lua/
 |   |-- config/          Options, mappings, templates, custom workflows
 |   |-- plugins/         Plugin declarations and setup, one module at a time
-|   |-- platform.lua     Platform helpers
 |   `-- utils.lua        Shared utilities and build helpers
 |-- lsp/                 Native per-server LSP configurations
 |-- after/plugin/        Extra integrations and overrides

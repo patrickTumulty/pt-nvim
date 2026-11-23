@@ -9,9 +9,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     pattern = '*',
 })
 
--- Enable faster startup by caching compiled Lua modules
-vim.loader.enable()
-
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
@@ -74,8 +71,6 @@ vim.o.timeout = true
 vim.o.timeoutlen = 300
 
 vim.opt.colorcolumn = "100"
-
-vim.wo.signcolumn = 'yes'
 
 vim.o.completeopt = 'menuone,noselect'
 

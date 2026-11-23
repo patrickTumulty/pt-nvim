@@ -67,17 +67,20 @@ gs.setup {
         end
 
         map('n', '<leader>hn', function()
-            if vim.wo.diff then return 'h]' end
-            vim.schedule(function() gs.next_hunk() end)
-            return '<Ignore>'
-        end, "[H]unk [N]ext", { expr = true })
+            if vim.wo.diff then
+                vim.cmd.normal({ ']c', bang = true })
+            else
+                gs.nav_hunk('next')
+            end
+        end, "[H]unk [N]ext")
 
-        map('n', '<leader>hp', function()
-            if vim.wo.diff then return 'h[' end
-            vim.schedule(function() gs.prev_hunk() end)
-            return '<Ignore>'
-        end, "[H]unk [P]rev", { expr = true })
-
+        map('n', '<leader>hb', function()
+            if vim.wo.diff then
+                vim.cmd.normal({ '[c', bang = true })
+            else
+                gs.nav_hunk('prev')
+            end
+        end, "[H]unk [B]ack")
 
         map('n', '<leader>hp', gs.preview_hunk, '[H]unk [P]review')
         map('n', '<leader>hr', gs.reset_hunk, "[H]unk [R]eset")

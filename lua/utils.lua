@@ -18,16 +18,18 @@ function M.mason_bin_path(lsp)
     return path .. lsp
 end
 
+function M.venv_pylsp_path()
+    if M.is_windows() then
+        return vim.fn.getcwd() .. "\\venv\\Scripts\\pylsp.exe"
+    end
+    return vim.fn.getcwd() .. "/venv/bin/pylsp"
+end
+
 function M.file_exists(path)
     if path == nil then
         return false
     end
-    local stat = vim.loop.fs_stat(path)
-    return stat ~= nil
-end
-
-function M.program_exists(cmd)
-    return vim.fn.executable(cmd) == 1
+    return vim.uv.fs_stat(path) ~= nil
 end
 
 function M.run_build(name, cmd, cwd)

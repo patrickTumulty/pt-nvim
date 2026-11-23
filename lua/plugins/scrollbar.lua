@@ -6,5 +6,7 @@ vim.pack.add({
 if os.getenv("SSH_CLIENT") or os.getenv("SSH_TTY") then
     return
 end
-require("scrollbar").setup()
-require("scrollbar.handlers.gitsigns").setup()
+
+require("scrollbar").setup({
+    providers = { gitsigns = true },
+})

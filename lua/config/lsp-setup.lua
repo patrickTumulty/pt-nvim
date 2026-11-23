@@ -17,9 +17,7 @@ local function onLspAttach(ev)
     end
 
     nmap('<leader>lr', vim.lsp.buf.rename, '[L]SP [R]ename')
-    nmap('<leader>la', vim.lsp.buf.code_action, '[L]SP Code [A]ction')
-
-    vim.keymap.set('v', '<leader>la', vim.lsp.buf.code_action, { desc = '[L]SP Code [A]ction' })
+    vim.keymap.set({ 'n', 'v' }, '<leader>la', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'LSP: [L]SP Code [A]ction' })
 
     local telescope = require("telescope.builtin")
 
@@ -33,11 +31,7 @@ local function onLspAttach(ev)
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
     nmap('<leader>k', vim.lsp.buf.signature_help, 'Signature Documentation')
 
-    -- Turn off inline diagnostics
-    vim.diagnostic.config({
-        virtual_text = false,
-    })
-    nmap("<leader>ld", ':lua vim.diagnostic.open_float()<CR>', "[L]SP [D]iagnostics")
+    nmap("<leader>ld", vim.diagnostic.open_float, "[L]SP [D]iagnostics")
     nmap("<leader>lD", telescope.diagnostics, "[L]SP [D]iagnostics: Telescope")
 
     -- Lesser used LSP functionality
@@ -51,19 +45,13 @@ local function onLspAttach(ev)
 end
 
 vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(ev)
-        onLspAttach(ev)
-    end,
+    callback = onLspAttach,
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local blink_caps = require('blink.cmp').get_lsp_capabilities(capabilities)
-
-vim.lsp.config('*', {
-    capabilities = blink_caps,
-})
+-- blink.cmp's plugin/ file already registers its completion capabilities via vim.lsp.config('*')
 
 vim.diagnostic.config({
+    virtual_text = false,
     signs = {
         text = {
             [vim.diagnostic.severity.ERROR] = '💩',
@@ -109,12 +97,5 @@ enableIfInstalled('vscode-css-language-server')
 enableIfInstalled("vscode-json-language-server")
 enableIfInstalled('neocmakelsp')
 enableIfInstalled('jdtls')
-
--- Cross-platform virtual environment path
-local venv_path
-if utils.is_windows() then
-    venv_path = vim.fn.getcwd() .. "\\venv\\Scripts\\pylsp.exe"
-else
-    venv_path = vim.fn.getcwd() .. "/venv/bin/pylsp"
-end
-enableIfInstalled('pylsp', true, venv_path)
+enableIfInstalled('bash-language-server')
+enableIfInstalled('pylsp', true, utils.venv_pylsp_path())

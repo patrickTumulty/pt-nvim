@@ -36,9 +36,6 @@ vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], opts("Copy to system clipboar
 vim.keymap.set("n", "<leader>Y", [["+Y]], opts("Copy line to system clipboard"))
 vim.keymap.set("n", "<leader>P", [["+P]], opts("Paste from system clipboard"))
 
--- delete to void register
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], opts("Delete to void register"))
-
 vim.keymap.set("n", "Q", "<nop>", opts("Disable Ex mode"))
 
 vim.keymap.set("n", "][", "<C-o>", opts("Jump List: Backward"))

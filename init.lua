@@ -1,5 +1,6 @@
+vim.loader.enable()
+
 _G.utils = require("utils")
-_G.platform = require("platform")
 
 require("config.vim-config")
 require("config.remap")
