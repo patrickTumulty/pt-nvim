@@ -6,6 +6,7 @@ require("config.remap")
 require("config.itar")
 require("config.template")
 require("config.xdotool")
+require("config.pack")
 
 for name, type in vim.fs.dir(vim.fn.stdpath("config") .. utils.sep .. "lua" .. utils.sep .. "plugins") do
     if type == "file" and name:match("%.lua$") then
