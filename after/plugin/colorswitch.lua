@@ -10,5 +10,5 @@ local function set_dark_mode(dark_mode)
     end
 end
 
-vim.keymap.set("n", "<leader>dm", function() set_dark_mode(true) end, opts("[D]ark [M]ode"))
-vim.keymap.set("n", "<leader>lm", function() set_dark_mode(false) end, opts("[L]ark [M]ode"))
+vim.keymap.set("n", "<leader>td", function() set_dark_mode(true) end, opts("[T]heme: [D]ark"))
+vim.keymap.set("n", "<leader>tl", function() set_dark_mode(false) end, opts("[T]heme: [L]ight"))

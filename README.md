@@ -99,9 +99,12 @@ requirement here supersedes that guide's older Neovim version requirement.
 
 ## Give It Language Servers
 
-Mason is configured, but language servers are **not automatically installed**.
-Open `:Mason`, install the servers you need, then restart Neovim. Most configured
-servers are enabled only when their Mason executable is present.
+On startup, Mason **automatically installs** any missing Lua, clangd, HTML, CSS,
+JSON, CMake, and Bash servers in the background and enables them when they're
+done (watch progress in `:Mason`). The npm-based ones are skipped if `npm` isn't
+on `PATH`. Install `gopls`, `typescript-language-server`, and `jdtls` yourself
+from `:Mason`; most configured servers are enabled only when their Mason
+executable is present.
 
 | Language | Server |
 | --- | --- |
@@ -157,7 +160,7 @@ not satisfy that launch path. Formatting uses the attached LSP server.
 | `<leader>hn` / `<leader>hp` | Next hunk / preview hunk |
 | `<leader>hr` / `<leader>gb` | Reset hunk / blame the current line |
 | `<leader>dg` | Generate documentation |
-| `<leader>dm` / `<leader>lm` | Dark / light background |
+| `<leader>td` / `<leader>tl` | Dark / light background |
 | `Ctrl-h/j/k/l` | Navigate splits |
 | `J` / `K` in visual mode | Move selected lines down / up |
 | `U` | Redo |

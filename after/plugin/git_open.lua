@@ -9,18 +9,24 @@ local function get_repos()
         -- On Windows, use PowerShell or dir command
         find_cmd = { "powershell", "-Command", "Get-ChildItem", "-Path", cwd, "-Filter", ".git", "-Directory", "-Recurse", "-Hidden" }
     else
-        find_cmd = { "find", cwd, "-path", "*/.git/config" }
+        -- Depth-limited and pruned so running from a large directory (e.g. ~) doesn't hang the UI
+        find_cmd = {
+            "find", cwd, "-maxdepth", "4",
+            "-name", "node_modules", "-prune", "-o",
+            "-type", "d", "-name", ".git", "-print", "-prune",
+        }
     end
     local find_out = vim.system(find_cmd, { text = true }):wait()
 
-    if find_out.code == 0 then
+    -- find exits non-zero on any unreadable directory but still prints what it found
+    if find_out.stdout then
         for line in find_out.stdout:gmatch("[^\r\n]+") do
             local path
             if utils.is_windows() then
                 -- PowerShell returns full path to .git directory
                 path = vim.fn.fnamemodify(line:match("^%s*(.-)%s*$"), ":h") -- Trim whitespace and get parent
             else
-                path = vim.fn.fnamemodify(line, ":p:h:h") -- Get the parent of .git
+                path = vim.fn.fnamemodify(line, ":h") -- Get the parent of .git
             end
             local name = vim.fn.fnamemodify(path, ":t")
 

@@ -27,9 +27,7 @@ local live_multigrep = function(opts)
                 table.insert(args, pieces[2])
             end
 
-            ---@diagnostic disable-next-line: deprecated
-            return vim.tbl_flatten {
-                args, {
+            return vim.list_extend(args, {
                 "--hidden",
                 "--glob", "!.git/*",
                 "--color=never",
@@ -37,9 +35,8 @@ local live_multigrep = function(opts)
                 "--with-filename",
                 "--line-number",
                 "--column",
-                "--smart-case"
-            },
-            }
+                "--smart-case",
+            })
         end,
         entry_maker = make_entry.gen_from_vimgrep(opts),
         cwd = opts.cwd,
@@ -55,7 +52,7 @@ local live_multigrep = function(opts)
 end
 
 M.setup = function()
-    vim.keymap.set("n", "<leader>fg", live_multigrep)
+    vim.keymap.set("n", "<leader>fg", live_multigrep, { desc = "Telescope: [F]ind by [G]rep (two spaces then a glob filters files)" })
 end
 
 return M

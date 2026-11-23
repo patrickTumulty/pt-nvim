@@ -1,13 +1,14 @@
+-- Ordered most specific first: the first matching entry wins, so main.cpp must precede *.cpp.
 local template_info_list = {
-    { ext = "sh",             pattern = "%.sh$" },
-    { ext = "html",           pattern = "%.html$" },
-    { ext = "hpp",            pattern = "%.hpp$" },
-    { ext = "h",              pattern = "%.h$" },
-    { ext = "main.cpp",       pattern = "main.cpp$" },
-    { ext = "cpp",            pattern = "%.cpp$" },
-    { ext = "main.c",         pattern = "main.c$" },
-    { ext = "c",              pattern = "%.c$" },
-    { ext = "CMakeLists.txt", pattern = "CMakeLists.txt$" },
+    { ext = "main.cpp",       glob = "main.cpp",       pattern = "^main%.cpp$" },
+    { ext = "main.c",         glob = "main.c",         pattern = "^main%.c$" },
+    { ext = "CMakeLists.txt", glob = "CMakeLists.txt", pattern = "^CMakeLists%.txt$" },
+    { ext = "sh",             glob = "*.sh",           pattern = "%.sh$" },
+    { ext = "html",           glob = "*.html",         pattern = "%.html$" },
+    { ext = "hpp",            glob = "*.hpp",          pattern = "%.hpp$" },
+    { ext = "h",              glob = "*.h",            pattern = "%.h$" },
+    { ext = "cpp",            glob = "*.cpp",          pattern = "%.cpp$" },
+    { ext = "c",              glob = "*.c",            pattern = "%.c$" },
 }
 
 local config_path = vim.fn.stdpath("config")
@@ -30,11 +31,6 @@ local function read_lines_from_file(filepath)
     return lines
 end
 
-local function contains_substring(str, substr)
-    local start_pos, _ = string.find(str, substr)
-    return start_pos ~= nil
-end
-
 local function to_snake(str, upper)
     str = str:gsub("([a-z])([A-Z])", "%1_%2")
     if upper then
@@ -54,35 +50,36 @@ local function to_camel(str)
 end
 
 local function process_template_lines(buf_name, lines)
+    -- Function replacements so a '%' in the filename isn't treated as a capture reference
+    local replacements = {
+        ["${FILE_NAME}"] = function() return to_snake(buf_name, true) end,
+        ["${file_name}"] = function() return to_snake(buf_name, false) end,
+        ["${FileName}"] = function() return to_camel(buf_name) end,
+        ["${filename}"] = function() return buf_name end,
+    }
     for i, line in ipairs(lines) do
-        if contains_substring(line, "${FILE_NAME}") then
-            -- Upper snake case filename
-            lines[i] = line:gsub("${FILE_NAME}", to_snake(buf_name, true))
-        elseif contains_substring(line, "${file_name}") then
-            -- Lower snake case filename
-            lines[i] = line:gsub("${file_name}", to_snake(buf_name, false))
-        elseif contains_substring(line, "${FileName}") then
-            -- Camel case filename
-            lines[i] = line:gsub("${FileName}", to_camel(buf_name))
-        elseif contains_substring(line, "${filename}") then
-            -- No formatting on filename
-            lines[i] = line:gsub("${filename}", buf_name)
+        for placeholder, replacement in pairs(replacements) do
+            line = line:gsub(vim.pesc(placeholder), replacement)
         end
+        lines[i] = line
     end
     return lines
 end
 
+local function file_stem(path, extension)
+    local stem = vim.fs.basename(path):gsub("%." .. vim.pesc(extension) .. "$", "")
+    return stem
+end
+
 local function write_skeleton_file_to_buffer(filepath, extension)
-    local buf = vim.api.nvim_get_current_buf()
-    local buf_name = vim.api.nvim_buf_get_name(buf)
-    buf_name = buf_name:match(".*/(.*)%." .. extension .. "$")
+    local buf_name = file_stem(vim.api.nvim_buf_get_name(0), extension)
     local lines = read_lines_from_file(filepath)
     lines = process_template_lines(buf_name, lines)
     vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
 end
 
 local function write_skeleton_file_to_file(template_path, filepath, extension)
-    local buf_name = filepath:match(".*/(.*)%." .. extension .. "$")
+    local buf_name = file_stem(filepath, extension)
     local lines = read_lines_from_file(template_path)
     lines = process_template_lines(buf_name, lines)
     local file = io.open(filepath, "w")
@@ -96,19 +93,28 @@ local function write_skeleton_file_to_file(template_path, filepath, extension)
     file:close()
 end
 
-for _, extension in ipairs(template_info_list) do
-    local skeleton_file_path = config_path ..
-        utils.sep .. "templates" .. utils.sep .. "template." .. extension.ext .. ".skel"
-    if utils.file_exists(skeleton_file_path) then
-        vim.api.nvim_create_autocmd("BufNewFile", {
-            pattern = "*." .. extension.ext,
-            group = template_group,
-            callback = function()
-                write_skeleton_file_to_buffer(skeleton_file_path, extension.ext)
-            end
-        })
+local function skeleton_path(template_info)
+    return config_path .. utils.sep .. "templates" .. utils.sep .. "template." .. template_info.ext .. ".skel"
+end
+
+local function find_template(filename)
+    for _, template_info in ipairs(template_info_list) do
+        if filename:match(template_info.pattern) and utils.file_exists(skeleton_path(template_info)) then
+            return template_info
+        end
     end
 end
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+    pattern = vim.tbl_map(function(template_info) return template_info.glob end, template_info_list),
+    group = template_group,
+    callback = function(args)
+        local template_info = find_template(vim.fs.basename(args.file))
+        if template_info then
+            write_skeleton_file_to_buffer(skeleton_path(template_info), template_info.ext)
+        end
+    end
+})
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "OilActionsPost",
@@ -131,17 +137,9 @@ vim.api.nvim_create_autocmd("User", {
             end
             local filename = path:match("([^/\\]+)$")
 
-            for _, template_info in ipairs(template_info_list) do
-                if not filename:match(template_info.pattern) then
-                    goto continue2
-                end
-                local skeleton_file_path = config_path ..
-                    utils.sep .. "templates" .. utils.sep .. "template." .. template_info.ext .. ".skel"
-                if not utils.file_exists(skeleton_file_path) then
-                    goto continue2
-                end
-                write_skeleton_file_to_file(skeleton_file_path, path, template_info.ext)
-                ::continue2::
+            local template_info = find_template(filename)
+            if template_info then
+                write_skeleton_file_to_file(skeleton_path(template_info), path, template_info.ext)
             end
 
             ::continue::

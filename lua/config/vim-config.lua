@@ -72,8 +72,6 @@ vim.o.timeoutlen = 300
 
 vim.opt.colorcolumn = "100"
 
-vim.o.completeopt = 'menuone,noselect'
-
 -- Cross-platform netrw sort sequence
 vim.g.netrw_sort_sequence = "[/\\\\]$,*"
 

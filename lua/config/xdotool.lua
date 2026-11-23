@@ -1,46 +1,31 @@
-local function is_xdotool_installed()
-    -- xdotool is Linux-specific, disable on Windows
-    if utils.is_windows() then
-        return false
-    end
-    local handle = io.popen("command -v xdotool")
-    if handle == nil then
-        return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-    return result ~= ""
-end
-
--- Get the current active window and store that in tmp file
-local nvim_window_id_cmd = "xdotool getactivewindow > /tmp/nvim_window_id"
--- Use stored window id to refocus the window
-local refocus_nvim_cmd = "xdotool windowactivate $(cat /tmp/nvim_window_id)"
-
-local function refresh_page(title)
-    local refresh_cmd = string.format("xdotool search --onlyvisible --name '%s' windowactivate --sync key F5", title)
-
-    local command = string.format("silent! !%s && %s && %s", nvim_window_id_cmd, refresh_cmd,
-        refocus_nvim_cmd)
-
-    vim.api.nvim_command(command)
-end
-
-if not is_xdotool_installed() then
+-- xdotool is X11-only
+if utils.is_windows() or vim.fn.executable("xdotool") == 0 then
     return
+end
+
+local function xdotool(args, on_exit)
+    vim.system(vim.list_extend({ "xdotool" }, args), { text = true }, on_exit)
+end
+
+-- Focus the browser window showing this page, press F5, then refocus nvim.
+local function refresh_page(title)
+    xdotool({ "getactivewindow" }, function(active)
+        local nvim_window_id = vim.trim(active.stdout or "")
+        xdotool({ "search", "--onlyvisible", "--name", title, "windowactivate", "--sync", "key", "F5" }, function(search)
+            if search.code ~= 0 or nvim_window_id == "" then
+                return
+            end
+            xdotool({ "windowactivate", nvim_window_id })
+        end)
+    end)
 end
 
 vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = "*.html",
     callback = function()
-        -- [[
-        -- We are getting the first 20 lines of HTML and parsing
-        -- out the title. Once we have that information, we can
-        -- use xdotool to refresh that webpage if it is open.
-        -- ]]
-        local content = vim.fn.getline(1, math.min(20, vim.fn.line("$")))
-        local full_conent = table.concat(content, "\n")
-        local title = full_conent:match("<title>(.-)</title>")
+        -- The <title> is assumed to be near the top of the file; it's how we find the browser window.
+        local head = vim.fn.getline(1, math.min(20, vim.fn.line("$")))
+        local title = table.concat(head, "\n"):match("<title>(.-)</title>")
 
         if not title then
             return

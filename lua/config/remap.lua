@@ -41,18 +41,28 @@ vim.keymap.set("n", "Q", "<nop>", opts("Disable Ex mode"))
 vim.keymap.set("n", "][", "<C-o>", opts("Jump List: Backward"))
 vim.keymap.set("n", "[]", "<C-i>", opts("Jump List: Forward"))
 
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- Prefer a real clipboard tool when one is available locally: many terminals
+-- don't support OSC 52 reads, which makes paste hang.
+local function has_local_clipboard_tool()
+    for _, tool in ipairs({ 'xclip', 'xsel', 'wl-copy', 'pbcopy', 'win32yank.exe' }) do
+        if vim.fn.executable(tool) == 1 then
+            return true
+        end
+    end
+    return false
+end
 
-vim.g.clipboard = {
-    name = 'OSC 52',
-    copy = {
-        ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-        ['*'] = require('vim.ui.clipboard.osc52').copy '*',
-    },
-    paste = {
-        ['+'] = require('vim.ui.clipboard.osc52').paste '+',
-        ['*'] = require('vim.ui.clipboard.osc52').paste '*',
-    },
-}
+local is_ssh = os.getenv("SSH_TTY") or os.getenv("SSH_CONNECTION")
+if is_ssh or not has_local_clipboard_tool() then
+    vim.g.clipboard = {
+        name = 'OSC 52',
+        copy = {
+            ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+            ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+        },
+        paste = {
+            ['+'] = require('vim.ui.clipboard.osc52').paste '+',
+            ['*'] = require('vim.ui.clipboard.osc52').paste '*',
+        },
+    }
+end

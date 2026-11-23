@@ -44,6 +44,14 @@ local function onLspAttach(ev)
     vim.keymap.set({ 'n', 'v' }, '<leader>lf', vim.lsp.buf.format, { buffer = bufnr, desc = "[L]SP [F]ormat" })
 end
 
+-- Neovim's built-in gr* LSP maps make the buffer-local `gr` above ambiguous,
+-- so it would only fire after 'timeoutlen'.
+for _, lhs in ipairs({ 'grr', 'gri', 'grn', 'gra', 'grt', 'grx' }) do
+    for _, mode in ipairs({ 'n', 'x' }) do
+        pcall(vim.keymap.del, mode, lhs)
+    end
+end
+
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = onLspAttach,
 })
@@ -99,3 +107,55 @@ enableIfInstalled('neocmakelsp')
 enableIfInstalled('jdtls')
 enableIfInstalled('bash-language-server')
 enableIfInstalled('pylsp', true, utils.venv_pylsp_path())
+
+-- Mason package names differ from the LSP config names for some servers.
+-- Only these servers are auto-installed; rust-analyzer comes from rustup, and
+-- gopls, typescript-language-server, jdtls, and pylsp are installed by hand.
+-- `needs` is the executable Mason shells out to for the install; without it the
+-- install would fail on every startup, so those servers are skipped instead.
+local auto_installed_mason_servers = {
+    { lsp = 'lua-language-server', package = 'lua-language-server' },
+    { lsp = 'clangd', package = 'clangd' },
+    { lsp = 'vscode-html-language-server', package = 'html-lsp', needs = 'npm' },
+    { lsp = 'vscode-css-language-server', package = 'css-lsp', needs = 'npm' },
+    { lsp = 'vscode-json-language-server', package = 'json-lsp', needs = 'npm' },
+    { lsp = 'neocmakelsp', package = 'neocmakelsp' },
+    { lsp = 'bash-language-server', package = 'bash-language-server', needs = 'npm' },
+}
+
+local function installMissingMasonServers()
+    local registry = require('mason-registry')
+
+    for _, server in ipairs(auto_installed_mason_servers) do
+        local lsp, package_name = server.lsp, server.package
+        local has_install_tool = server.needs == nil or vim.fn.executable(server.needs) == 1
+        if not has_install_tool then
+            goto continue
+        end
+
+        if registry.has_package(package_name) then
+            local package = registry.get_package(package_name)
+            if not package:is_installed() and not package:is_installing() then
+                vim.notify('Mason: installing ' .. package_name, vim.log.levels.INFO)
+                package:install({}, function(success, err)
+                    vim.schedule(function()
+                        if success then
+                            vim.notify('Mason: installed ' .. package_name, vim.log.levels.INFO)
+                            vim.lsp.enable(lsp)
+                        else
+                            vim.notify('Mason: failed to install ' .. package_name .. ': ' .. tostring(err),
+                                vim.log.levels.ERROR)
+                        end
+                    end)
+                end)
+            end
+        else
+            vim.notify('Mason: no package named ' .. package_name, vim.log.levels.WARN)
+        end
+
+        ::continue::
+    end
+end
+
+-- The registry may not be downloaded yet on a fresh machine, so refresh before looking up packages.
+require('mason-registry').refresh(vim.schedule_wrap(installMissingMasonServers))
